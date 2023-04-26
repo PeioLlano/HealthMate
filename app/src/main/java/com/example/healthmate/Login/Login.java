@@ -2,11 +2,13 @@ package com.example.healthmate.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.healthmate.PantallaPrincipal.PantallaPrincipal;
 import com.example.healthmate.R;
 
 public class Login extends AppCompatActivity {
@@ -38,5 +40,10 @@ public class Login extends AppCompatActivity {
     // Método privado para comprobar el inicio de sesión del usuario
     private void comprobarLogeo(String username, String password) {
         // Implementar la lógica para comprobar el inicio de sesión del usuario
+
+        Intent intent = new Intent(Login.this, PantallaPrincipal.class);
+        intent.putExtra("usuario", username);
+        startActivity(intent);
+        Login.this.finish();
     }
 }
