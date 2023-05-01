@@ -1,4 +1,4 @@
-package com.example.healthmate.PantallaPrincipal;
+package com.example.healthmate.Mediciones;
 
 import android.content.Context;
 import android.content.Intent;

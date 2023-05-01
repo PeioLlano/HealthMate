@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthmate.Mapa.Mapa;
 import com.example.healthmate.Modelo.Medicion;
-import com.example.healthmate.PantallaPrincipal.MedicionAdapter;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipal;
 import com.example.healthmate.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,7 +69,12 @@ public class Mediciones extends AppCompatActivity {
                         Toast.makeText(Mediciones.this, "sport", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.map:
-                        Toast.makeText(Mediciones.this, "map", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Mediciones.this, "map", Toast.LENGTH_SHORT).show();
+                        Intent intentMa = new Intent(Mediciones.this, Mapa.class);
+                        intentMa.putExtra("usuario", username);
+                        startActivity(intentMa);
+                        Mediciones.this.finish();
+
                         break;
                     case R.id.measurements:
                         Toast.makeText(Mediciones.this, "measure", Toast.LENGTH_SHORT).show();

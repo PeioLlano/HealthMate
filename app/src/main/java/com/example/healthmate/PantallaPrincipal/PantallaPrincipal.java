@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthmate.Mapa.Mapa;
 import com.example.healthmate.Mediciones.Mediciones;
 import com.example.healthmate.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -49,13 +50,17 @@ public class PantallaPrincipal extends AppCompatActivity {
                         Toast.makeText(PantallaPrincipal.this, "sport", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.map:
-                        Toast.makeText(PantallaPrincipal.this, "map", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PantallaPrincipal.this, "map", Toast.LENGTH_SHORT).show();
+                        Intent intentMa = new Intent(PantallaPrincipal.this, Mapa.class);
+                        intentMa.putExtra("usuario", username);
+                        startActivity(intentMa);
+                        PantallaPrincipal.this.finish();
                         break;
                     case R.id.measurements:
                         //Toast.makeText(PantallaPrincipal.this, "measure", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PantallaPrincipal.this, Mediciones.class);
-                        intent.putExtra("usuario", username);
-                        startActivity(intent);
+                        Intent intentMe = new Intent(PantallaPrincipal.this, Mediciones.class);
+                        intentMe.putExtra("usuario", username);
+                        startActivity(intentMe);
                         PantallaPrincipal.this.finish();
                         break;
                     case R.id.chat:
