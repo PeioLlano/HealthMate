@@ -6,4 +6,8 @@
     <string name="password_ph">Contraseña</string>
     <string name="signup">Resgistrarse</string>
     <string name="no_account">¿Todavía no tienes una cuenta?</string>
+    <string name="empty_list">Lista vacia</string>
+    <string name="delete_measurement">¿Quiere eliminar la medicion?</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
 </resources>
