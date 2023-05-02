@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.healthmate.ChatBot.Chat;
 import com.example.healthmate.Mediciones.Mediciones;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipal;
 import com.example.healthmate.R;
@@ -77,7 +78,11 @@ public class Mapa extends FragmentActivity implements OnMapReadyCallback {
 
                         break;
                     case R.id.chat:
-                        Toast.makeText(Mapa.this, "chat", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Mapa.this, "chat", Toast.LENGTH_SHORT).show();
+                        Intent intentC = new Intent(Mapa.this, Chat.class);
+                        intentC.putExtra("usuario", username);
+                        startActivity(intentC);
+                        Mapa.this.finish();
                         break;
                 }
                 return true;

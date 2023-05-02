@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthmate.ChatBot.Chat;
 import com.example.healthmate.Mapa.Mapa;
 import com.example.healthmate.Modelo.Medicion;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipal;
@@ -80,7 +81,11 @@ public class Mediciones extends AppCompatActivity {
                         Toast.makeText(Mediciones.this, "measure", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.chat:
-                        Toast.makeText(Mediciones.this, "chat", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Mediciones.this, "chat", Toast.LENGTH_SHORT).show();
+                        Intent intentC = new Intent(Mediciones.this, Chat.class);
+                        intentC.putExtra("usuario", username);
+                        startActivity(intentC);
+                        Mediciones.this.finish();
                         break;
                 }
                 return true;

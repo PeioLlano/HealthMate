@@ -11,4 +11,5 @@
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
     <string name="enter_message">Introduzca mensaje</string>
+    <string name="start_chatting">Comience a chatear para cualquier consulta...</string>
 </resources>

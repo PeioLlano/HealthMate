@@ -35,8 +35,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4.35"
-                android:backgroundTint="@color/green_200"
+                android:background="@drawable/st_edittext_small_radius"
                 android:hint="@string/enter_message"
+                android:padding="8dp"
+                android:textColorHint="@color/green_200"
+                android:textSize="20sp"
                 tools:ignore="TouchTargetSizeCheck" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -54,6 +57,34 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llVacia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/rlChat"
+        app:layout_constraintEnd_toEndOf="@+id/rlChat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivEmptyChat"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/chat" />
+
+        <TextView
+            android:id="@+id/tvStartTexting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/start_chatting"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnvOpciones"
