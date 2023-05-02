@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.healthmate.ChatBot.Chat;
 import com.example.healthmate.Mapa.Mapa;
 import com.example.healthmate.Mediciones.Mediciones;
 import com.example.healthmate.R;
@@ -64,7 +65,11 @@ public class PantallaPrincipal extends AppCompatActivity {
                         PantallaPrincipal.this.finish();
                         break;
                     case R.id.chat:
-                        Toast.makeText(PantallaPrincipal.this, "chat", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PantallaPrincipal.this, "chat", Toast.LENGTH_SHORT).show();
+                        Intent intentC = new Intent(PantallaPrincipal.this, Chat.class);
+                        intentC.putExtra("usuario", username);
+                        startActivity(intentC);
+                        PantallaPrincipal.this.finish();
                         break;
                 }
                 return true;
