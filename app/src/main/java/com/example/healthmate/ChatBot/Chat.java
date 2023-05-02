@@ -1,10 +1,8 @@
 package com.example.healthmate.ChatBot;
 
 import android.os.Bundle;
-import android.telephony.TelephonyCallback;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,15 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.healthmate.Modelo.Mensaje;
 import com.example.healthmate.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class Chat extends AppCompatActivity {
 
     // Creación de variables para los widgets en el archivo xml.
-    private RecyclerView chatsRV; // Vista que muestra los mensajes del chat.
-    private ImageButton sendMsgIB; // Botón que envía los mensajes del usuario.
-    private EditText userMsgEdt; // Campo de texto donde el usuario escribe sus mensajes.
+    private RecyclerView rvMensajes; // Vista que muestra los mensajes del chat.
+    private FloatingActionButton fabMandar; // Botón que envía los mensajes del usuario.
+    private EditText etMensaje; // Campo de texto donde el usuario escribe sus mensajes.
     private final String USER_KEY = "user"; // Clave para identificar los mensajes del usuario.
     private final String BOT_KEY = "bot"; // Clave para identificar los mensajes del bot.
 
@@ -35,29 +34,29 @@ public class Chat extends AppCompatActivity {
         setContentView(R.layout.chat);
 
         // Inicialización de las vistas.
-        chatsRV = findViewById(R.id.idRVChats); // Obtener la vista RecyclerView.
-        sendMsgIB = findViewById(R.id.idIBSend); // Obtener el botón de envío de mensaje.
-        userMsgEdt = findViewById(R.id.idEdtMessage); // Obtener el campo de texto de entrada de mensaje.
+        rvMensajes = findViewById(R.id.rvMensajes); // Obtener la vista RecyclerView.
+        fabMandar = findViewById(R.id.fabMandar); // Obtener el botón de envío de mensaje.
+        etMensaje = findViewById(R.id.etMensaje); // Obtener el campo de texto de entrada de mensaje.
 
         // Creación de una nueva lista de mensajes.
         mensajeArrayList = new ArrayList<>();
 
         // Agregando el listener del botón de envío de mensaje.
-        sendMsgIB.setOnClickListener(new View.OnClickListener() {
+        fabMandar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Verificando si el mensaje ingresado por el usuario está vacío.
-                if (userMsgEdt.getText().toString().isEmpty()) {
+                if (etMensaje.getText().toString().isEmpty()) {
                     // Si el campo de texto está vacío, muestra un mensaje en la pantalla.
                     Toast.makeText(Chat.this, "Please enter your message..", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // Llamada al método para enviar el mensaje al bot y obtener una respuesta.
-                sendMessage(userMsgEdt.getText().toString());
+                sendMessage(etMensaje.getText().toString());
 
                 // Establece el campo de texto a un valor vacío después del envío.
-                userMsgEdt.setText("");
+                etMensaje.setText("");
             }
         });
 
@@ -66,10 +65,10 @@ public class Chat extends AppCompatActivity {
 
         // Establece un linear layout manager para el RecyclerView.
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(Chat.this, RecyclerView.VERTICAL, false);
-        chatsRV.setLayoutManager(linearLayoutManager);
+        rvMensajes.setLayoutManager(linearLayoutManager);
 
         // Establece el adaptador para el RecyclerView.
-        chatsRV.setAdapter(chatAdapter);
+        rvMensajes.setAdapter(chatAdapter);
     }
 
     private void sendMessage(String userMsg) {

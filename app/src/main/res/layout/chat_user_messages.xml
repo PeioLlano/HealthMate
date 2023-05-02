@@ -22,7 +22,7 @@
 
         <!--text view for displaying user message-->
         <TextView
-            android:id="@+id/idTVUser"
+            android:id="@+id/tvMensajeUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -33,6 +33,7 @@
 
         <!--we are displaying user icon-->
         <ImageView
+            android:id="@+id/ivIcono"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"

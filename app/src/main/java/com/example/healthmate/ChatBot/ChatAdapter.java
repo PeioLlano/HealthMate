@@ -51,11 +51,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
         switch (mensaje.getRemitente()) {
             case "user":
                 // establece el texto del mensaje del usuario en la vista.
-                ((UsuarioViewHolder) holder).textoMensajeUsuario.setText(mensaje.getMensaje());
+                ((UsuarioViewHolder) holder).tvMensajeUser.setText(mensaje.getMensaje());
                 break;
             case "bot":
                 // establece el texto del mensaje del bot en la vista.
-                ((BotViewHolder) holder).textoMensajeBot.setText(mensaje.getMensaje());
+                ((BotViewHolder) holder).tvMensajeBot.setText(mensaje.getMensaje());
                 break;
         }
     }
@@ -83,12 +83,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static class UsuarioViewHolder extends RecyclerView.ViewHolder {
 
         // variable para el texto del mensaje del usuario.
-        TextView textoMensajeUsuario;
+        TextView tvMensajeUser;
 
         public UsuarioViewHolder(@NonNull View vista) {
             super(vista);
             // inicializa la variable con el id del TextView en el diseño de mensaje del usuario.
-            textoMensajeUsuario = vista.findViewById(R.id.idTVUser);
+            tvMensajeUser = vista.findViewById(R.id.tvMensajeUser);
         }
     }
 
@@ -96,12 +96,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public static class BotViewHolder extends RecyclerView.ViewHolder {
 
         // variable para el texto del mensaje del bot.
-        TextView textoMensajeBot;
+        TextView tvMensajeBot;
 
         public BotViewHolder(@NonNull View vista) {
             super(vista);
             // inicializa la variable con el id del TextView en el diseño de mensaje del bot.
-            textoMensajeBot = vista.findViewById(R.id.idTVBot);
+            tvMensajeBot = vista.findViewById(R.id.tvMensajeBot);
         }
     }
 }
