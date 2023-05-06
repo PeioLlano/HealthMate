@@ -25,30 +25,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthMate"
         tools:targetApi="31">
+
         <activity
-            android:name=".Login.Login"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".PantallaPrincipal.PantallaPrincipal"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".Mediciones.Mediciones"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".Mapa.Mapa"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".ChatBot.Chat"
-            android:exported="true">
         </activity>
 
         <meta-data

@@ -1,3 +1,4 @@
+/*
 package com.example.healthmate.Mediciones;
 
 import android.content.DialogInterface;
@@ -13,10 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.healthmate.ChatBot.Chat;
-import com.example.healthmate.Mapa.Mapa;
 import com.example.healthmate.Modelo.Medicion;
-import com.example.healthmate.PantallaPrincipal.PantallaPrincipal;
 import com.example.healthmate.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -187,3 +185,4 @@ public class Mediciones extends AppCompatActivity {
         mediciones.remove(item);
     }
 }
+*/

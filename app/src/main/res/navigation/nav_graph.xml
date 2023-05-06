@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.healthmate.Login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_pantallaPrincipalFragment"
+            app:destination="@id/pantallaPrincipalFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pantallaPrincipalFragment"
+        android:name="com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment"
+        android:label="fragment_pantalla_principal"
+        tools:layout="@layout/fragment_pantalla_principal" >
+        <argument
+            android:name="usuario"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.healthmate.ChatBot.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/mapaFragment"
+        android:name="com.example.healthmate.Mapa.MapaFragment"
+        android:label="fragment_mapa"
+        tools:layout="@layout/fragment_mapa" />
+
+    <fragment
+        android:id="@+id/medicionesFragment"
+        android:name="com.example.healthmate.Mediciones.MedicionesFragment"
+        android:label="fragment_mediciones"
+        tools:layout="@layout/fragment_mediciones" />
+
+</navigation>

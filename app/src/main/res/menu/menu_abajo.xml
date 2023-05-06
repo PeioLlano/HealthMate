@@ -3,28 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/map"
+        android:id="@+id/mapaFragment"
         android:title="Map"
-        android:icon="@drawable/map"/>
+        android:icon="@drawable/map" />
 
     <item
         android:id="@+id/sport"
         android:title="Sport"
-        android:icon="@drawable/sport"
-        />
+        android:icon="@drawable/sport" />
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/pantallaPrincipalFragment"
         android:title="Home"
-        android:icon="@drawable/home"
-        />
+        android:icon="@drawable/home" />
 
     <item
-        android:id="@+id/measurements"
+        android:id="@+id/medicionesFragment"
         android:title="Measurements"
         android:icon="@drawable/measurements" />
     <item
-        android:id="@+id/chat"
+        android:id="@+id/chatFragment"
         android:title="Chat"
         android:icon="@drawable/chat" />
 
