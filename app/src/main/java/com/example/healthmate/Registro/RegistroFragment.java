@@ -1,8 +1,9 @@
-package com.example.healthmate.Login;
+package com.example.healthmate.Registro;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.healthmate.Login.LoginFragmentDirections;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.InsertWorker;
 import com.example.healthmate.Workers.SelectWorker;
@@ -35,9 +37,11 @@ import com.google.firebase.iid.InstanceIdResult;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
-public class LoginFragment extends Fragment {
+public class RegistroFragment extends Fragment {
 
     /* Atributos de la interfaz gráfica */
     private EditText eUsername;
@@ -60,88 +64,97 @@ public class LoginFragment extends Fragment {
         @Nullable ViewGroup container,
         @Nullable Bundle savedInstanceState
     ) {
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_registro, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        cargarLogeado();
+        Button bSignUp = view.findViewById(R.id.bSignUp);
 
-        eUsername = view.findViewById(R.id.eUsername);
-        ePassword = view.findViewById(R.id.ePassword);
-        tNoCuenta = view.findViewById(R.id.tNoCuenta);
-        bSignIn = view.findViewById(R.id.bSignIn);
-        bSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Llamar al método "comprobarLogeo" con los valores ingresados en las vistas "EditText"
-                comprobarLogeo(eUsername.getText().toString(), ePassword.getText().toString());
-            }
-        });
-        bSignUp = view.findViewById(R.id.bSignUp);
+        int tiempoToast= Toast.LENGTH_SHORT;
+
+        EditText ePasswordRepeat = view.findViewById(R.id.ePasswordRepeat);
+        EditText eMail = view.findViewById(R.id.eMail);
+        EditText ePassword = view.findViewById(R.id.ePassword);
+        EditText eUsername = view.findViewById(R.id.eUsername);
+
+        //Boton para registrar las credenciales infromadas
         bSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(
-                    requireContext(),
-                    "REGISTRARSE",
-                    Toast.LENGTH_SHORT
-                ).show();
+                if (todo_relleno(eUsername.getText().toString(),ePassword.getText().toString(),ePasswordRepeat.getText().toString(),eMail.getText().toString())) {
+                    if (isValidEmailAddress(eMail.getText().toString())){
+                        if (mismaPass(ePassword.getText().toString(), ePasswordRepeat.getText().toString())){
+                            try{
+                                registrarUsuario(eUsername.getText().toString(), ePassword.getText().toString());
+                            }
+                            catch (SQLiteConstraintException e) {
+                                e.printStackTrace();
+                                Toast aviso = Toast.makeText(requireContext(), getResources().getString(R.string.user_exists), Toast.LENGTH_SHORT);
+                                aviso.show();
+                            }
+                        }
+                        else {
+                            Toast avisoDistintaPass = Toast.makeText(view.getContext(), getString(R.string.diff_pass), tiempoToast);
+                            avisoDistintaPass.show();
+                        }
+                    }
+                    else {
+                        Toast avisoMailEmail = Toast.makeText(view.getContext(), getString(R.string.invalid_mail), tiempoToast);
+                        avisoMailEmail.show();
+                    }
+                }
+                else {
+                    Toast avisoCamposNoRellenos = Toast.makeText(view.getContext(), getString(R.string.fill_fields), tiempoToast);
+                    avisoCamposNoRellenos.show();
+                }
             }
         });
     }
 
-    // Método privado para comprobar el inicio de sesión del usuario
-    private void comprobarLogeo(String username, String password) {
-
+    private void registrarUsuario(String username, String pass) {
         //Inicializar toast de inicio incorreto
         int tiempoToast= Toast.LENGTH_SHORT;
-        Toast avisoInicioIncorrecto = Toast.makeText(requireContext(), getString(R.string.incorrect_cred), tiempoToast);
+        Toast avisoInicioIncorrecto = Toast.makeText(getContext(), getString(R.string.user_exists), tiempoToast);
 
-        if (!(username.isEmpty() || password.isEmpty())) {
+        String passHash = hashPassword(pass);
 
-            String passHash = hashPassword(password);
+        Data data = new Data.Builder()
+                .putString("tabla", "Usuarios")
+                .putStringArray("keys", new String[]{"Usuario", "Contraseña"})
+                .putStringArray("values", new String[]{username, passHash})
+                .build();
 
-            Data data = new Data.Builder()
-                    .putString("tabla", "Usuarios")
-                    .putString("condicion", "Usuario='"+username+"' AND Contraseña='" + passHash+"'")
-                    .build();
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
 
-            Constraints constr = new Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .build();
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(InsertWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
 
-            OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(SelectWorker.class)
-                    .setConstraints(constr)
-                    .setInputData(data)
-                    .build();
+        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(req.getId())
+                .observe(this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        Boolean inserted = status.getOutputData().getBoolean("resultado", false);
+                        if(inserted) {
+                            guardarPreferenciaLogin(username);
 
-            WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(req.getId())
-                    .observe(this, status -> {
-                        if (status != null && status.getState().isFinished()) {
-                            String resultados = status.getOutputData().getString("resultados");
-                            if (resultados == "null" || resultados == "") resultados = null;
-                            if(resultados != null) {
-                                subirTokenFirebase(username);
-                                guardarPreferenciaLogin(username);
-                                NavDirections accion = LoginFragmentDirections
-                                        .actionLoginFragmentToPantallaPrincipalFragment(username);
-                                NavHostFragment.findNavController(this).navigate(accion);
-                            }
-                            //En caso contrario el toast de inicio incorrecto
-                            else {
-                                avisoInicioIncorrecto.show();
-                            }
+                            //subirTokenFirebase(username);
+                            NavDirections accion = com.example.healthmate.Login.LoginFragmentDirections
+                                    .actionLoginFragmentToPantallaPrincipalFragment(username);
+                            NavHostFragment.findNavController(this).navigate(accion);
                         }
-                    });
-            WorkManager.getInstance(requireContext()).enqueue(req);
-
-        }//En caso contrario el toast de inicio incorrecto
-        else {
-            avisoInicioIncorrecto.show();
-        }
+                        //En caso contrario el toast de inicio incorrecto
+                        else {
+                            avisoInicioIncorrecto.show();
+                        }
+                    }
+                });
+        WorkManager.getInstance(requireContext()).enqueue(req);
     }
 
     public static String hashPassword(String password) {
@@ -214,17 +227,22 @@ public class LoginFragment extends Fragment {
         editor.commit();
     }
 
-    public void cargarLogeado() {
-        SharedPreferences preferences = getContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
+    //Comprobar si el mail es valido
+    public static boolean isValidEmailAddress(String email) {
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
+        Matcher matcher = pattern.matcher(email);
 
-        String loged_user = preferences.getString("loged_user", "");
+        return matcher.find();
+    }
 
-        if(loged_user != "") {
-            NavDirections accion = LoginFragmentDirections
-                    .actionLoginFragmentToPantallaPrincipalFragment(loged_user);
-            NavHostFragment.findNavController(this).navigate(accion);
-        }
+    //Comprobar si las dos contraseñas son iguales
+    public static boolean mismaPass(String pass1, String pass2) {
+        return (pass1.equals(pass2));
+    }
+
+    //Comprobar si todos los campos estan rellenos
+    private boolean todo_relleno(String username, String pass1, String pass2, String mail) {
+        return ((!username.equals("")) && (!pass1.equals("")) && (!pass2.equals("")) && (!mail.equals("")));
     }
 
 }

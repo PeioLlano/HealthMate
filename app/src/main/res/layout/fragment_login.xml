@@ -13,7 +13,7 @@
         android:gravity="center" >
 
         <ImageView
-            android:id="@+id/logo_login_euroliga"
+            android:id="@+id/ivFotoLogin"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             tools:srcCompat="@tools:sample/avatars" />

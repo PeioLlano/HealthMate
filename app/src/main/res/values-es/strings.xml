@@ -12,4 +12,11 @@
     <string name="cancel">Cancelar</string>
     <string name="enter_message">Introduzca mensaje</string>
     <string name="start_chatting">Comience a chatear para cualquier consulta...</string>
+    <string name="incorrect_cred">Credenciales incorrectas</string>
+    <string name="email">Email</string>
+    <string name="repeat_password">Repite la contraseña</string>
+    <string name="user_exists">El usuario ya existe.</string>
+    <string name="diff_pass">Las contraseñas no coinciden.</string>
+    <string name="invalid_mail">Introduzca un email valido.</string>
+    <string name="fill_fields">" Rellene todos los campos. "</string>
 </resources>
