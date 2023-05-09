@@ -143,8 +143,9 @@ public class RegistroFragment extends Fragment {
                         if(inserted) {
                             guardarPreferenciaLogin(username);
 
-                            //subirTokenFirebase(username);
-                            NavDirections accion = com.example.healthmate.Login.LoginFragmentDirections
+                            subirTokenFirebase(username);
+                            guardarPreferenciaLogin(username);
+                            NavDirections accion = (NavDirections) com.example.healthmate.Login.LoginFragmentDirections
                                     .actionLoginFragmentToPantallaPrincipalFragment(username);
                             NavHostFragment.findNavController(this).navigate(accion);
                         }
