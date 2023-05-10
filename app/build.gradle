@@ -55,4 +55,11 @@ dependencies {
 
     // Dependencia para insertar gráficos
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
+    implementation 'com.google.android.libraries.places:places:3.1.0'
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+
+    implementation 'commons-io:commons-io:2.11.0'
+
 }
