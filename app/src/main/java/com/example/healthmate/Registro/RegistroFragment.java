@@ -145,8 +145,8 @@ public class RegistroFragment extends Fragment {
 
                             subirTokenFirebase(username);
                             guardarPreferenciaLogin(username);
-                            NavDirections accion = (NavDirections) com.example.healthmate.Login.LoginFragmentDirections
-                                    .actionLoginFragmentToPantallaPrincipalFragment(username);
+                            NavDirections accion = RegistroFragmentDirections
+                                    .actionRegistroFragmentToPantallaPrincipalFragment(username);
                             NavHostFragment.findNavController(this).navigate(accion);
                         }
                         //En caso contrario el toast de inicio incorrecto

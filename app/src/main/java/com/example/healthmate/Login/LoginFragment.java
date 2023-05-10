@@ -84,11 +84,12 @@ public class LoginFragment extends Fragment {
         bSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(
+                navegarHaciarRegistro();
+                /*Toast.makeText(
                     requireContext(),
                     "REGISTRARSE",
                     Toast.LENGTH_SHORT
-                ).show();
+                ).show();*/
             }
         });
     }
@@ -122,7 +123,7 @@ public class LoginFragment extends Fragment {
                     .observe(this, status -> {
                         if (status != null && status.getState().isFinished()) {
                             String resultados = status.getOutputData().getString("resultados");
-                            if (resultados == "null" || resultados == "") resultados = null;
+                            if (resultados.equals("null") || resultados.equals("")) resultados = null;
                             if(resultados != null) {
                                 subirTokenFirebase(username);
                                 guardarPreferenciaLogin(username);
@@ -207,24 +208,30 @@ public class LoginFragment extends Fragment {
     }
 
     //Guardar las preferencias del usuario que ha iniciado sesion
-    public void guardarPreferenciaLogin(String user){
+    private void guardarPreferenciaLogin(String user){
         SharedPreferences preferences = getContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("loged_user", user);
         editor.commit();
     }
 
-    public void cargarLogeado() {
+    private void cargarLogeado() {
         SharedPreferences preferences = getContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         String loged_user = preferences.getString("loged_user", "");
 
-        if(loged_user != "") {
+        if(!loged_user.equals("")) {
             NavDirections accion = LoginFragmentDirections
                     .actionLoginFragmentToPantallaPrincipalFragment(loged_user);
             NavHostFragment.findNavController(this).navigate(accion);
         }
+    }
+
+    private void navegarHaciarRegistro() {
+        NavDirections accion = LoginFragmentDirections
+                .actionLoginFragmentToRegistroFragment();
+        NavHostFragment.findNavController(this).navigate(accion);
     }
 
 }

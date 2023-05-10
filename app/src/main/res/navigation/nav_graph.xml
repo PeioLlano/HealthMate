@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_pantallaPrincipalFragment"
             app:destination="@id/pantallaPrincipalFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registroFragment"
+            app:destination="@id/registroFragment" />
     </fragment>
 
     <fragment
@@ -42,5 +45,14 @@
         android:name="com.example.healthmate.Mediciones.MedicionesFragment"
         android:label="fragment_mediciones"
         tools:layout="@layout/fragment_mediciones" />
+
+    <fragment
+        android:id="@+id/registroFragment"
+        android:name="com.example.healthmate.Registro.RegistroFragment"
+        android:label="RegistroFragment" >
+        <action
+            android:id="@+id/action_registroFragment_to_pantallaPrincipalFragment"
+            app:destination="@id/pantallaPrincipalFragment" />
+    </fragment>
 
 </navigation>
