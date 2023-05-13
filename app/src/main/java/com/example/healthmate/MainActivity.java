@@ -1,25 +1,35 @@
 package com.example.healthmate;
 
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
     implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment {
 
     /* Atributos de la interfaz gráfica */
     private BottomNavigationView bnvOpciones;
-
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     /* Otros atributos */
     private NavController navController;
@@ -36,7 +46,27 @@ public class MainActivity extends AppCompatActivity
             .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bnvOpciones, navController);
+
+        NavigationView navigationView = findViewById(R.id.nvSidebar);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.shareFragment:
+                        makeText(MainActivity.this, "Has pulsado el botón compartir", LENGTH_SHORT).show();
+                        break;
+                    case R.id.logoutFragment:
+                        makeText(MainActivity.this, "Has pulsado el botón logout", LENGTH_SHORT).show();
+                        break;
+                }
+
+                //drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+
+            }
+        });
     }
+
 
     /* Funciones para gestionar el menú inferior */
     @Override
