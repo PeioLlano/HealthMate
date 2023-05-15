@@ -20,4 +20,5 @@
     <string name="fill_fields">Fill in all the fields.</string>
     <string name="navigation_drawer_open">Closed</string>
     <string name="navigation_drawer_close">Closed</string>
+    <string name="enterExerciseData">Enter exercise data</string>
 </resources>

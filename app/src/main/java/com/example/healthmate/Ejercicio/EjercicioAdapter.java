@@ -54,7 +54,7 @@ public class EjercicioAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.item_ejercicio, null);
 
         // Obtener las referencias a los elementos de la vista del item de la lista
-        TextView tvTitulo = view.findViewById(R.id.tvTitulo);
+        TextView tvTitulo = view.findViewById(R.id.etTitulo);
         TextView tvFecha = view.findViewById(R.id.tvFecha);
         TextView tvEstadisticaDestacada = view.findViewById(R.id.tvEstadisticaDestacada);
         ImageView ivDeporte = view.findViewById(R.id.ivDeporte);

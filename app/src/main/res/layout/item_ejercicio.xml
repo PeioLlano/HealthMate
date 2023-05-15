@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tvTitulo"
+            android:id="@+id/etTitulo"
             android:layout_width="wrap_content"
             android:maxWidth="180dp"
             android:layout_height="wrap_content"
@@ -35,8 +35,8 @@
             android:text="dd/mm/aaaa"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/tvTitulo"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitulo" />
+            app:layout_constraintStart_toStartOf="@+id/etTitulo"
+            app:layout_constraintTop_toBottomOf="@+id/etTitulo" />
 
         <TextView
             android:id="@+id/tvEstadisticaDestacada"
@@ -51,8 +51,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.925"
-            app:layout_constraintStart_toEndOf="@+id/tvTitulo"
-            app:layout_constraintTop_toTopOf="@+id/tvTitulo"
+            app:layout_constraintStart_toEndOf="@+id/etTitulo"
+            app:layout_constraintTop_toTopOf="@+id/etTitulo"
             app:layout_constraintVertical_bias="0.529" />
 
         <ImageView

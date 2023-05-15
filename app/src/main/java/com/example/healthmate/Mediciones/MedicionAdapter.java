@@ -54,7 +54,7 @@ public class MedicionAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.item_medicion, null);
 
         // Obtener las referencias a los elementos de la vista del item de la lista
-        TextView tvTitulo = view.findViewById(R.id.tvTitulo);
+        TextView tvTitulo = view.findViewById(R.id.etTitulo);
         TextView tvFecha = view.findViewById(R.id.tvFecha);
         TextView tvMedicionDestacada = view.findViewById(R.id.tvMedicionDestacada);
         ImageView ivMedicion = view.findViewById(R.id.ivMedicion);

@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EjercicioFragment extends Fragment {
+public class EjercicioFragment extends Fragment implements AddEjercicioDialog.AddEjercicioDialogListener {
 
     private String username;
     private ListView lvEjercicio;
@@ -59,6 +59,18 @@ public class EjercicioFragment extends Fragment {
             }
         });
 
+        // Obtenemos la referencia al botón flotante de añadir
+        FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
+
+        // Configuramos el listener para el botón de filtrar
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddEjercicioDialog dialog = new AddEjercicioDialog();
+                dialog.show(getActivity().getSupportFragmentManager(), "DialogoAñadir");
+            }
+        });
+
         // Obtenemos la referencia a la vista de lista de ejercicios
         lvEjercicio = view.findViewById(R.id.lvEjercicio);
 
@@ -71,6 +83,14 @@ public class EjercicioFragment extends Fragment {
         ejercicios.add(new Ejercicio(2,"Entrenamiento de natacion",new Date("12/2/2023"), 1.23, "Nadar"));
         ejercicios.add(new Ejercicio(3,"Bici por la playa",new Date("19/2/2023"), 19.6, "Ciclismo"));
         ejercicios.add(new Ejercicio(4,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));
+        ejercicios.add(new Ejercicio(5,"Carrera de tarde",new Date("12/12/2022"), 8.3, "Running"));
+        ejercicios.add(new Ejercicio(6,"Entrenamiento de natacion",new Date("12/2/2023"), 1.23, "Nadar"));
+        ejercicios.add(new Ejercicio(7,"Bici por la playa",new Date("19/2/2023"), 19.6, "Ciclismo"));
+        ejercicios.add(new Ejercicio(8,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));
+        ejercicios.add(new Ejercicio(9,"Carrera de tarde",new Date("12/12/2022"), 8.3, "Running"));
+        ejercicios.add(new Ejercicio(10,"Entrenamiento de natacion",new Date("12/2/2023"), 1.23, "Nadar"));
+        ejercicios.add(new Ejercicio(11,"Bici por la playa",new Date("19/2/2023"), 19.6, "Ciclismo"));
+        ejercicios.add(new Ejercicio(12,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));
 
         // Creamos un adaptador para la lista de ejercicios
         pAdapter = new EjercicioAdapter(requireContext(), ejercicios);
@@ -128,5 +148,10 @@ public class EjercicioFragment extends Fragment {
     private void borrarEjercicio (Ejercicio item){
         // Aquí se implementaría la lógica para borrar el ejercicio
         ejercicios.remove(item);
+    }
+    
+    @Override
+    public void añadirEjercicio(String titulo, Date fecha, Double distancia, String tipo) {
+        Toast.makeText(requireContext(), "Hola", Toast.LENGTH_SHORT).show();
     }
 }

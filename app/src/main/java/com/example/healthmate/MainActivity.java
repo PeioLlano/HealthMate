@@ -19,12 +19,15 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.healthmate.Ejercicio.AddEjercicioDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity
-    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment {
+    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment, AddEjercicioDialog.AddEjercicioDialogListener {
 
     /* Atributos de la interfaz gráfica */
     private BottomNavigationView bnvOpciones;
@@ -127,5 +130,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         return NavigationUI.onNavDestinationSelected(item, navController)
             || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void añadirEjercicio(String titulo, Date fecha, Double distancia, String tipo) {
+
     }
 }
