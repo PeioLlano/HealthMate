@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bnvOpciones, navController);
 
+        /*
         NavigationView navigationView = findViewById(R.id.nvSidebar);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        */
     }
 
 

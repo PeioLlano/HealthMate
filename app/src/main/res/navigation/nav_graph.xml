@@ -54,5 +54,10 @@
             android:id="@+id/action_registroFragment_to_pantallaPrincipalFragment"
             app:destination="@id/pantallaPrincipalFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/ejercicioFragment"
+        android:name="com.example.healthmate.Ejercicio.EjercicioFragment"
+        android:label="EjercicioFragment"
+        tools:layout="@layout/fragment_ejercicio"/>
 
 </navigation>
