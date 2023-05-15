@@ -73,7 +73,7 @@ public class EjercicioAdapter extends BaseAdapter {
 
         tvFecha.setText(formattedDate);
 
-        tvEstadisticaDestacada.setText(Double.toString(ejercicio.getMedicion()) + "kms");
+        tvEstadisticaDestacada.setText(Double.toString(ejercicio.getDistancia()) + "kms");
 
         // Establecer la imagen adecuada según el tipo de medicion
         switch (ejercicio.getTipo()) {

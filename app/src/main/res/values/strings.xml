@@ -21,4 +21,6 @@
     <string name="navigation_drawer_open">Closed</string>
     <string name="navigation_drawer_close">Closed</string>
     <string name="enterExerciseData">Enter exercise data</string>
+    <string name="enterMedicionData">Añada informacion de la medicion</string>
+    <string name="error">An error has occurred</string>
 </resources>

@@ -33,7 +33,7 @@ public class Ejercicio {
         return fecha;
     }
 
-    public Double getMedicion() {
+    public Double getDistancia() {
         return distancia;
     }
 

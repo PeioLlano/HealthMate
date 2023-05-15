@@ -13,15 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.R;
+import com.example.healthmate.Workers.InsertWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EjercicioFragment extends Fragment implements AddEjercicioDialog.AddEjercicioDialogListener {
+public class EjercicioFragment extends Fragment {
 
     private String username;
     private ListView lvEjercicio;
@@ -149,9 +155,51 @@ public class EjercicioFragment extends Fragment implements AddEjercicioDialog.Ad
         // Aquí se implementaría la lógica para borrar el ejercicio
         ejercicios.remove(item);
     }
-    
-    @Override
-    public void añadirEjercicio(String titulo, Date fecha, Double distancia, String tipo) {
-        Toast.makeText(requireContext(), "Hola", Toast.LENGTH_SHORT).show();
+
+    private void añadirEjercicio(Ejercicio item){
+        //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
+        Data data = new Data.Builder()
+                .putString("tabla", "Mediciones")
+                .putStringArray("keys", new String[]{"Usuario","Titulo","Distancia","Fecha","Tipo"})
+                .putStringArray("values", new String[]{username,item.getTitulo(), item.getDistancia().toString(), item.getFecha().toString(), item.getTipo()})
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(InsertWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(requireContext());
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe(this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        Boolean resultados = status.getOutputData().getBoolean("resultado", false);
+                        if(resultados) {
+                            ejercicios.add(item);
+                            pAdapter.notifyDataSetChanged();
+                            actualizarVacioLleno(ejercicios);
+                        }
+                        else {
+                            Toast aviso = Toast.makeText(requireActivity(), getResources().getString(R.string.error), Toast.LENGTH_SHORT);
+                            aviso.show();
+                        }
+                    }});
     }
+
+    //Actualizar lo que se ve dependiendo del tamaño de la lista.
+    private void actualizarVacioLleno(ArrayList<Ejercicio> grupos) {
+
+        if(grupos.size() > 0) {
+            llVacia.setVisibility(View.GONE);
+        } else {
+            llVacia.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

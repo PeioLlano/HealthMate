@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.healthmate.Ejercicio.AddEjercicioDialog;
+import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -27,7 +28,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment, AddEjercicioDialog.AddEjercicioDialogListener {
+    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment, AddEjercicioDialog.AddEjercicioDialogListener, AddMedicionDialog.AddMedicionDialogListener {
 
     /* Atributos de la interfaz gráfica */
     private BottomNavigationView bnvOpciones;
@@ -134,6 +135,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void añadirEjercicio(String titulo, Date fecha, Double distancia, String tipo) {
+
+    }
+
+    @Override
+    public void añadirMedicion(String titulo, Date fecha, String medicion, String tipo) {
 
     }
 }

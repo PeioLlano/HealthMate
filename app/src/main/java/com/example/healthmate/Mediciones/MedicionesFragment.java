@@ -7,6 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +20,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.healthmate.Ejercicio.AddEjercicioDialog;
 import com.example.healthmate.Modelo.Medicion;
 import com.example.healthmate.R;
+import com.example.healthmate.Workers.InsertWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -57,6 +64,18 @@ public class MedicionesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Obtenemos la referencia al botón flotante de añadir
+        FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
+
+        // Configuramos el listener para el botón de filtrar
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddMedicionDialog dialog = new AddMedicionDialog();
+                dialog.show(getActivity().getSupportFragmentManager(), "DialogoAñadir");
             }
         });
 
@@ -102,6 +121,7 @@ public class MedicionesFragment extends Fragment {
                     borrarMedicion((Medicion) pAdapter.getItem(posAborrar[0]));
                     posAborrar[0] = -1;
                     pAdapter.notifyDataSetChanged();
+                    actualizarVacioLleno(mediciones);
                 }
             });
         builderG.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -131,5 +151,51 @@ public class MedicionesFragment extends Fragment {
     private void borrarMedicion (Medicion item){
         // Aquí se implementaría la lógica para borrar la medición
         mediciones.remove(item);
+    }
+
+    private void añadirMedicion(Medicion item){
+        //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
+        Data data = new Data.Builder()
+                .putString("tabla", "Mediciones")
+                .putStringArray("keys", new String[]{"Usuario","Titulo","Medicion","Fecha","Tipo"})
+                .putStringArray("values", new String[]{username,item.getTitulo(), item.getMedicion(), item.getFecha().toString(), item.getTipo()})
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(InsertWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(requireContext());
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe(this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        Boolean resultados = status.getOutputData().getBoolean("resultado", false);
+                        if(resultados) {
+                            mediciones.add(item);
+                            pAdapter.notifyDataSetChanged();
+                            actualizarVacioLleno(mediciones);
+                        }
+                        else {
+                            Toast aviso = Toast.makeText(requireActivity(), getResources().getString(R.string.error), Toast.LENGTH_SHORT);
+                            aviso.show();
+                        }
+                    }});
+    }
+
+    //Actualizar lo que se ve dependiendo del tamaño de la lista.
+    private void actualizarVacioLleno(ArrayList<Medicion> grupos) {
+
+        if(grupos.size() > 0) {
+            llVacia.setVisibility(View.GONE);
+        } else {
+            llVacia.setVisibility(View.VISIBLE);
+        }
     }
 }
