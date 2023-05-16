@@ -84,8 +84,8 @@ public class AddMedicionDialog extends AppCompatDialogFragment {
                         }
                         else{
                             int tiempoToast= Toast.LENGTH_SHORT;
-                            Toast avisoGasto = Toast.makeText(view.getContext(), getString(R.string.fill_fields), tiempoToast);
-                            avisoGasto.show();
+                            Toast avisoMedicion = Toast.makeText(view.getContext(), getString(R.string.fill_fields), tiempoToast);
+                            avisoMedicion.show();
                         }
                     }
                 });
