@@ -21,11 +21,13 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.healthmate.MainActivity;
 import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.InsertWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -57,6 +59,9 @@ public class EjercicioFragment extends Fragment {
                         Log.d("EjercicioFragment", "Código = " + codigo + "; titulo = " +
                             titulo + "; fecha = " + fecha + "; distancia = " + distancia +
                             "; tipo = " + tipo);
+
+                        Ejercicio ejercicioNuevo = new Ejercicio(codigo, titulo,new Date(fecha),distancia,tipo);
+                        añadirEjercicio(ejercicioNuevo);
                     }
                 });
     }
@@ -178,11 +183,17 @@ public class EjercicioFragment extends Fragment {
     }
 
     private void añadirEjercicio(Ejercicio item){
+        // Define el formato deseado para la fecha
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        // Formatea la fecha utilizando el formato definido
+        String formattedDate = dateFormat.format(item.getFecha());
+
         //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
         Data data = new Data.Builder()
-                .putString("tabla", "Mediciones")
+                .putString("tabla", "Ejercicios")
                 .putStringArray("keys", new String[]{"Usuario","Titulo","Distancia","Fecha","Tipo"})
-                .putStringArray("values", new String[]{username,item.getTitulo(), item.getDistancia().toString(), item.getFecha().toString(), item.getTipo()})
+                .putStringArray("values", new String[]{((MainActivity) getActivity()).cargarLogeado(),item.getTitulo(), item.getDistancia().toString(), formattedDate, item.getTipo()})
                 .build();
 
         Constraints constr = new Constraints.Builder()
@@ -201,7 +212,10 @@ public class EjercicioFragment extends Fragment {
                 .observe(this, status -> {
                     if (status != null && status.getState().isFinished()) {
                         Boolean resultados = status.getOutputData().getBoolean("resultado", false);
+                        Integer id = status.getOutputData().getInt("id", -1);
+
                         if(resultados) {
+                            item.setCodigo(id);
                             ejercicios.add(item);
                             pAdapter.notifyDataSetChanged();
                             actualizarVacioLleno(ejercicios);

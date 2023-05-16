@@ -25,6 +25,10 @@ public class Ejercicio {
         return codigo;
     }
 
+    public Integer setCodigo(Integer codigo) {
+        return this.codigo = codigo;
+    }
+
     public String getTitulo() {
         return titulo;
     }

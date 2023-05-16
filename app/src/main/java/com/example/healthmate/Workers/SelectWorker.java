@@ -29,10 +29,10 @@ public class SelectWorker extends Worker {
         String condicion = getInputData().getString("condicion");
 
         try {
-            Log.d("statusCode", String.valueOf("http://ec2-54-93-62-124.eu-central-1.compute.amazonaws.com/pllano002/WEB/ReadData.php"));
+            Log.d("statusCode", String.valueOf("http://ec2-54-93-62-124.eu-central-1.compute.amazonaws.com/pllano002/WEB/HealthMate/ReadData.php"));
 
             HttpURLConnection urlConnection = null;
-            URL url = new URL("http://ec2-54-93-62-124.eu-central-1.compute.amazonaws.com/pllano002/WEB/ReadData.php");
+            URL url = new URL("http://ec2-54-93-62-124.eu-central-1.compute.amazonaws.com/pllano002/WEB/HealthMate/ReadData.php");
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(5000);
             urlConnection.setReadTimeout(5000);

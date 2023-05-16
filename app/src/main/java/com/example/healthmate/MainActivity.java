@@ -3,6 +3,8 @@ package com.example.healthmate;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.healthmate.Ejercicio.AddEjercicioDialog;
+import com.example.healthmate.Login.LoginFragmentDirections;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -137,5 +141,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void añadirMedicion(String titulo, Date fecha, String medicion, String tipo) {
 
+    }
+
+    public String cargarLogeado() {
+        SharedPreferences preferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        String loged_user = preferences.getString("loged_user", "");
+
+        return loged_user;
     }
 }
