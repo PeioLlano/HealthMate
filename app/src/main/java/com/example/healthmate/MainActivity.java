@@ -6,9 +6,15 @@ import static android.widget.Toast.makeText;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,6 +55,16 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         bnvOpciones = findViewById(R.id.bnvOpciones);
+
+        drawerLayout = findViewById(R.id.my_drawer_layout);
+
+        Button botonDesplegable = findViewById(R.id.botonDesplegable);
+        botonDesplegable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
 
         /* Configurar navegación con barra inferior */
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
