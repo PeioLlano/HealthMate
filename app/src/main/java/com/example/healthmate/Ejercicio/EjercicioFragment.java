@@ -24,8 +24,14 @@ import androidx.work.WorkManager;
 import com.example.healthmate.MainActivity;
 import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.R;
+import com.example.healthmate.Workers.DeleteWorker;
 import com.example.healthmate.Workers.InsertWorker;
+import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,10 +114,70 @@ public class EjercicioFragment extends Fragment {
 
         // Obtenemos la referencia a la vista de "lista vacía"
         llVacia = view.findViewById(R.id.llVacia);
+        llVacia.setVisibility(View.INVISIBLE);
 
         // Ejemplo hasta que decidimamos como almacenamos los datos
         ejercicios = new ArrayList<>();
-        ejercicios.add(new Ejercicio(1,"Carrera de tarde",new Date("12/12/2022"), 8.3, "Running"));
+
+        //Pedimos todos los ejercicios que tenga el usuario que hemos recibido
+        final JSONArray[] jsonArray = {new JSONArray()};
+
+        Data data = new Data.Builder()
+                .putString("tabla", "Ejercicios")
+                .putString("condicion", "Usuario='"+((MainActivity) getActivity()).cargarLogeado()+"'")
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(SelectWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(requireContext());
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe(requireActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String resultados = status.getOutputData().getString("resultados");
+                        if (resultados.equals("null") || resultados.equals("")) resultados = null;
+                        if(resultados != null) {
+                            try {
+                                jsonArray[0] = new JSONArray(resultados);
+
+                                for (int i = 0; i < jsonArray[0].length(); i++) {
+                                    JSONObject obj = jsonArray[0].getJSONObject(i);
+                                    Integer Codigo = obj.getInt("Codigo");
+                                    String Titulo = obj.getString("Titulo");
+                                    double Distancia = obj.getDouble("Distancia");
+                                    String Tipo = obj.getString("Tipo");
+
+
+                                    Date fechaImp;
+                                    try {
+                                        fechaImp = new Date(obj.getString("Fecha"));
+                                    } catch (Exception e) {
+                                        fechaImp = new Date();
+                                    }
+
+                                    ejercicios.add(new Ejercicio(Codigo,Titulo,fechaImp,Distancia,Tipo));
+
+                                    pAdapter.notifyDataSetChanged();
+
+                                }
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        actualizarVacioLleno(ejercicios);
+                    }
+                });
+        WorkManager.getInstance(requireContext()).enqueue(req);
+
+        /*ejercicios.add(new Ejercicio(1,"Carrera de tarde",new Date("12/12/2022"), 8.3, "Running"));
         ejercicios.add(new Ejercicio(2,"Entrenamiento de natacion",new Date("12/2/2023"), 1.23, "Nadar"));
         ejercicios.add(new Ejercicio(3,"Bici por la playa",new Date("19/2/2023"), 19.6, "Ciclismo"));
         ejercicios.add(new Ejercicio(4,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));
@@ -122,19 +188,13 @@ public class EjercicioFragment extends Fragment {
         ejercicios.add(new Ejercicio(9,"Carrera de tarde",new Date("12/12/2022"), 8.3, "Running"));
         ejercicios.add(new Ejercicio(10,"Entrenamiento de natacion",new Date("12/2/2023"), 1.23, "Nadar"));
         ejercicios.add(new Ejercicio(11,"Bici por la playa",new Date("19/2/2023"), 19.6, "Ciclismo"));
-        ejercicios.add(new Ejercicio(12,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));
+        ejercicios.add(new Ejercicio(12,"Carrera de mediatarde",new Date("12/12/2022"), 8.3, "Running"));*/
 
         // Creamos un adaptador para la lista de ejercicios
         pAdapter = new EjercicioAdapter(requireContext(), ejercicios);
 
         // Configuramos el adaptador para la vista de lista de ejercicios
         lvEjercicio.setAdapter(pAdapter);
-
-        // Si el adaptador no contiene elementos, mostramos la vista de "lista vacía"
-        if (pAdapter.getCount() == 0) {
-            llVacia.setVisibility(View.VISIBLE);
-            // lvMediciones.setVisibility(View.GONE);
-        }
 
         // Creamos una variable para guardar la posición del elemento a borrar
         final Integer[] posAborrar = {-1};
@@ -147,10 +207,35 @@ public class EjercicioFragment extends Fragment {
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    // Borramos el ejercicio seleccionado y notificamos al adaptador
-                    borrarEjercicio((Ejercicio) pAdapter.getItem(posAborrar[0]));
-                    posAborrar[0] = -1;
-                    pAdapter.notifyDataSetChanged();
+                    Data data = new Data.Builder()
+                            .putString("tabla", "Ejercicios")
+                            .putString("condicion", "Usuario = '" + ((MainActivity) requireActivity()).cargarLogeado() + "' AND Codigo = '" + ((Ejercicio) pAdapter.getItem(posAborrar[0])).getCodigo() + "'")
+                            .build();
+
+                    Constraints constr = new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build();
+
+                    OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(DeleteWorker.class)
+                            .setConstraints(constr)
+                            .setInputData(data)
+                            .build();
+
+                    WorkManager workManager = WorkManager.getInstance(requireContext());
+                    workManager.enqueue(req);
+
+                    workManager.getWorkInfoByIdLiveData(req.getId())
+                            .observe(requireActivity(), status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String resultados = status.getOutputData().getString("resultados");
+                                    if(resultados.equals("Ok")) {
+                                        // Borramos el ejercicio seleccionado y notificamos al adaptador
+                                        borrarEjercicio((Ejercicio) pAdapter.getItem(posAborrar[0]));
+                                        posAborrar[0] = -1;
+                                        pAdapter.notifyDataSetChanged();
+                                        actualizarVacioLleno(ejercicios);
+                                    }
+                                }});
                 }
             });
         builderG.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

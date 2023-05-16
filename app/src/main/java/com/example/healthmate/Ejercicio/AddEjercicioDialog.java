@@ -33,6 +33,7 @@ public class AddEjercicioDialog extends AppCompatDialogFragment {
 
         EditText etTitulo = view.findViewById(R.id.etTitulo);
         EditText etDistancia = view.findViewById(R.id.etDistancia);
+        EditText etDate = view.findViewById(R.id.etDate);
 
         Spinner sTipo = (Spinner) view.findViewById(R.id.sTipo);
         ArrayList<String> tipos = new ArrayList<>();
@@ -69,7 +70,12 @@ public class AddEjercicioDialog extends AppCompatDialogFragment {
                             Bundle nuevoEjercicio = new Bundle();
                             nuevoEjercicio.putInt("codigo", -1);
                             nuevoEjercicio.putString("titulo", etTitulo.getText().toString());
-                            nuevoEjercicio.putString("fecha", new Date("16/05/2023").toString());
+                            if (etDate.getText().toString().equals("")) {
+                                nuevoEjercicio.putString("fecha", new Date().toString());
+                            }
+                            else{
+                                nuevoEjercicio.putString("fecha", etDate.getText().toString());
+                            }
                             nuevoEjercicio.putDouble("distancia",
                                     Double.parseDouble(etDistancia.getText().toString()));
                             nuevoEjercicio.putString("tipo", sTipo.getSelectedItem().toString());

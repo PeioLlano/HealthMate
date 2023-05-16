@@ -23,11 +23,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.healthmate.Ejercicio.AddEjercicioDialog;
+import com.example.healthmate.MainActivity;
+import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.Modelo.Medicion;
 import com.example.healthmate.R;
+import com.example.healthmate.Workers.DeleteWorker;
 import com.example.healthmate.Workers.InsertWorker;
+import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,6 +67,9 @@ public class MedicionesFragment extends Fragment {
                         Log.d("MedicionesFragment", "titulo = " +
                                 titulo + "; fecha = " + fecha + "; medicion = " + medicion +
                                 "; tipo = " + tipo);
+
+                        Medicion medicionNuevo = new Medicion(-1, titulo,new Date(fecha),medicion,tipo);
+                        añadirMedicion(medicionNuevo);
                     }
                 });
     }
@@ -107,24 +119,78 @@ public class MedicionesFragment extends Fragment {
 
         // Ejemplo hasta que decidimamos como almacenamos los datos
         mediciones = new ArrayList<>();
+
+        //Pedimos todos los ejercicios que tenga el usuario que hemos recibido
+        final JSONArray[] jsonArray = {new JSONArray()};
+
+        Data data = new Data.Builder()
+                .putString("tabla", "Mediciones")
+                .putString("condicion", "Usuario='"+((MainActivity) getActivity()).cargarLogeado()+"'")
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(SelectWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(requireContext());
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe(requireActivity(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String resultados = status.getOutputData().getString("resultados");
+                        if (resultados.equals("null") || resultados.equals("")) resultados = null;
+                        if(resultados != null) {
+                            try {
+                                jsonArray[0] = new JSONArray(resultados);
+
+                                for (int i = 0; i < jsonArray[0].length(); i++) {
+                                    JSONObject obj = jsonArray[0].getJSONObject(i);
+                                    Integer Codigo = obj.getInt("Codigo");
+                                    String Titulo = obj.getString("Titulo");
+                                    String Medicion = obj.getString("Medicion");
+                                    String Tipo = obj.getString("Tipo");
+
+
+                                    Date fechaImp;
+                                    try {
+                                        fechaImp = new Date(obj.getString("Fecha"));
+                                    } catch (Exception e) {
+                                        fechaImp = new Date();
+                                    }
+
+                                    mediciones.add(new Medicion(Codigo,Titulo,fechaImp,Medicion,Tipo));
+
+                                    pAdapter.notifyDataSetChanged();
+
+                                }
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        actualizarVacioLleno(mediciones);
+                    }
+                });
+        WorkManager.getInstance(requireContext()).enqueue(req);
+/*
         mediciones.add(new Medicion(1,"Medicion de peso",new Date("12/12/2022"), "88 kg", "Peso"));
         mediciones.add(new Medicion(2,"Medicion de altura",new Date("12/2/2023"), "189 cm", "Altura"));
         mediciones.add(new Medicion(3,"Medicion de IMC",new Date("19/2/2023"), "19.8", "IMC"));
         mediciones.add(new Medicion(4,"Medicion de FC",new Date("21/3/2023"), "190 ppm", "Frecuencia cardíaca"));
         mediciones.add(new Medicion(4,"Medicion de PA",new Date("1/3/2023"), "140 mmHg", "Presión arterial"));
         mediciones.add(new Medicion(4,"Medicion de NOS",new Date("23/3/2023"), "93 %", "Nivel de oxígeno en sangre"));
+*/
 
         // Creamos un adaptador para la lista de mediciones
         pAdapter = new MedicionAdapter(requireContext(), mediciones);
 
         // Configuramos el adaptador para la vista de lista de mediciones
         lvMediciones.setAdapter(pAdapter);
-
-        // Si el adaptador no contiene elementos, mostramos la vista de "lista vacía"
-        if (pAdapter.getCount() == 0) {
-            llVacia.setVisibility(View.VISIBLE);
-            // lvMediciones.setVisibility(View.GONE);
-        }
 
         // Creamos una variable para guardar la posición del elemento a borrar
         final Integer[] posAborrar = {-1};
@@ -138,10 +204,35 @@ public class MedicionesFragment extends Fragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // Borramos la medición seleccionada y notificamos al adaptador
-                    borrarMedicion((Medicion) pAdapter.getItem(posAborrar[0]));
-                    posAborrar[0] = -1;
-                    pAdapter.notifyDataSetChanged();
-                    actualizarVacioLleno(mediciones);
+                    Data data = new Data.Builder()
+                            .putString("tabla", "Mediciones")
+                            .putString("condicion", "Usuario = '" + ((MainActivity) requireActivity()).cargarLogeado() + "' AND Codigo = '" + ((Medicion) pAdapter.getItem(posAborrar[0])).getCodigo() + "'")
+                            .build();
+
+                    Constraints constr = new Constraints.Builder()
+                            .setRequiredNetworkType(NetworkType.CONNECTED)
+                            .build();
+
+                    OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(DeleteWorker.class)
+                            .setConstraints(constr)
+                            .setInputData(data)
+                            .build();
+
+                    WorkManager workManager = WorkManager.getInstance(requireContext());
+                    workManager.enqueue(req);
+
+                    workManager.getWorkInfoByIdLiveData(req.getId())
+                            .observe(requireActivity(), status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String resultados = status.getOutputData().getString("resultados");
+                                    if(resultados.equals("Ok")) {
+                                        // Borramos el ejercicio seleccionado y notificamos al adaptador
+                                        borrarMedicion((Medicion) pAdapter.getItem(posAborrar[0]));
+                                        posAborrar[0] = -1;
+                                        pAdapter.notifyDataSetChanged();
+                                        actualizarVacioLleno(mediciones);
+                                    }
+                                }});
                 }
             });
         builderG.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -174,11 +265,19 @@ public class MedicionesFragment extends Fragment {
     }
 
     private void añadirMedicion(Medicion item){
+
+        // Define el formato deseado para la fecha
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+        // Formatea la fecha utilizando el formato definido
+        String formattedDate = dateFormat.format(item.getFecha());
+
+
         //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
         Data data = new Data.Builder()
                 .putString("tabla", "Mediciones")
                 .putStringArray("keys", new String[]{"Usuario","Titulo","Medicion","Fecha","Tipo"})
-                .putStringArray("values", new String[]{username,item.getTitulo(), item.getMedicion(), item.getFecha().toString(), item.getTipo()})
+                .putStringArray("values", new String[]{((MainActivity) getActivity()).cargarLogeado(),item.getTitulo(), item.getMedicion(), formattedDate, item.getTipo()})
                 .build();
 
         Constraints constr = new Constraints.Builder()
