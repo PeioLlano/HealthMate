@@ -7,12 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,24 @@ public class MedicionesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+         * Listener para recoger los datos del nuevo evento enviado por el diálogo
+         * 'AddMedicionDialog'.
+         */
+        getParentFragmentManager().setFragmentResultListener(
+                "nuevaMedicion", this, new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        String titulo = bundle.getString("titulo");
+                        String fecha = bundle.getString("fecha");
+                        String medicion = bundle.getString("medicion");
+                        String tipo = bundle.getString("tipo");
+                        Log.d("MedicionesFragment", "titulo = " +
+                                titulo + "; fecha = " + fecha + "; medicion = " + medicion +
+                                "; tipo = " + tipo);
+                    }
+                });
     }
 
     @Nullable
@@ -75,7 +95,7 @@ public class MedicionesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AddMedicionDialog dialog = new AddMedicionDialog();
-                dialog.show(getActivity().getSupportFragmentManager(), "DialogoAñadir");
+                dialog.show(getParentFragmentManager(), "DialogoAñadir");
             }
         });
 

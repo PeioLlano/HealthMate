@@ -44,7 +44,7 @@ public class EjercicioFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         /*
-         * Listener para actuar recoger los datos del nuevo evento enviado por el diálogo
+         * Listener para recoger los datos del nuevo evento enviado por el diálogo
          * 'AddEjercicioDialog'.
          */
         getParentFragmentManager().setFragmentResultListener(

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -71,13 +72,20 @@ public class AddMedicionDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!etTitulo.getText().toString().equals("") && !etMedicion.getText().toString().equals("")) {
-                            if (etDate.getText().toString().equals(""))miListener.añadirMedicion(etTitulo.getText().toString(), new Date(), etMedicion.getText().toString(), sTipo.getSelectedItem().toString());
-                            else miListener.añadirMedicion(etTitulo.getText().toString(), new Date(etDate.getText().toString()), etMedicion.getText().toString(), sTipo.getSelectedItem().toString());
+                            Bundle nuevaMedicion = new Bundle();
+                            nuevaMedicion.putString("titulo", etTitulo.getText().toString());
+                            nuevaMedicion.putString("fecha", etDate.getText().toString());
+                            nuevaMedicion.putString("medicion", etMedicion.getText().toString());
+                            nuevaMedicion.putString("tipo", sTipo.getSelectedItem().toString());
+                            getParentFragmentManager()
+                                    .setFragmentResult("nuevaMedicion", nuevaMedicion);
+                            /*if (etDate.getText().toString().equals(""))miListener.añadirMedicion(etTitulo.getText().toString(), new Date(), etMedicion.getText().toString(), sTipo.getSelectedItem().toString());
+                            else miListener.añadirMedicion(etTitulo.getText().toString(), new Date(etDate.getText().toString()), etMedicion.getText().toString(), sTipo.getSelectedItem().toString());*/
                         }
                         else{
                             int tiempoToast= Toast.LENGTH_SHORT;
-                            Toast avisoGasto = Toast.makeText(view.getContext(), getString(R.string.fill_fields), tiempoToast);
-                            avisoGasto.show();
+                            Toast avisoMedicion = Toast.makeText(view.getContext(), getString(R.string.fill_fields), tiempoToast);
+                            avisoMedicion.show();
                         }
                     }
                 });
