@@ -28,7 +28,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
-    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment, AddEjercicioDialog.AddEjercicioDialogListener, AddMedicionDialog.AddMedicionDialogListener {
+    implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment,
+        AddMedicionDialog.AddMedicionDialogListener {
 
     /* Atributos de la interfaz gráfica */
     private BottomNavigationView bnvOpciones;
@@ -131,11 +132,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         return NavigationUI.onNavDestinationSelected(item, navController)
             || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void añadirEjercicio(String titulo, Date fecha, Double distancia, String tipo) {
-
     }
 
     @Override

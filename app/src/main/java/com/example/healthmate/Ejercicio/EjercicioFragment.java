@@ -2,6 +2,7 @@ package com.example.healthmate.Ejercicio;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -38,6 +40,25 @@ public class EjercicioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+         * Listener para actuar recoger los datos del nuevo evento enviado por el diálogo
+         * 'AddEjercicioDialog'.
+         */
+        getParentFragmentManager().setFragmentResultListener(
+                "nuevoEjercicio", this, new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        int codigo = bundle.getInt("codigo");
+                        String titulo = bundle.getString("titulo");
+                        String fecha = bundle.getString("fecha");
+                        Double distancia = bundle.getDouble("distancia");
+                        String tipo = bundle.getString("tipo");
+                        Log.d("EjercicioFragment", "Código = " + codigo + "; titulo = " +
+                            titulo + "; fecha = " + fecha + "; distancia = " + distancia +
+                            "; tipo = " + tipo);
+                    }
+                });
     }
 
     @Nullable
@@ -73,7 +94,7 @@ public class EjercicioFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AddEjercicioDialog dialog = new AddEjercicioDialog();
-                dialog.show(getActivity().getSupportFragmentManager(), "DialogoAñadir");
+                dialog.show(getParentFragmentManager(), "DialogoAñadir");
             }
         });
 
