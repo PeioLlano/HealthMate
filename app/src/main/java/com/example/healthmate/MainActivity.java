@@ -143,6 +143,11 @@ public class MainActivity extends AppCompatActivity
                         transaction.commit();
 
                         break;
+
+                    case R.id.medicines:
+                        makeText(MainActivity.this, "TO DO", LENGTH_SHORT).show();
+
+                        break;
                 }
 
                 drawerLayout.closeDrawer(Gravity.LEFT);

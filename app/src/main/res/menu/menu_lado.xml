@@ -2,6 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <group android:id="@+id/grupo1">
+
+        <item
+            android:id="@+id/medicines"
+            android:title="Medicines"
+            android:icon="@drawable/pills" />
+
+    </group>
+
+    <group android:id="@+id/grupo2">
+
     <item
         android:id="@+id/shareFragment"
         android:title="Share"
@@ -17,4 +28,5 @@
         android:title="Log Out"
         android:icon="@drawable/logout" />
 
+    </group>
 </menu>
