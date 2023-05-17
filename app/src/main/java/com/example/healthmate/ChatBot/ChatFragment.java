@@ -140,6 +140,7 @@ public class ChatFragment extends Fragment {
         mensajeArrayList.add(new Mensaje(response, BOT_KEY));
         // Notificar al adaptador de que los datos han cambiado
         chatAdapter.notifyDataSetChanged();
+        rvMensajes.smoothScrollToPosition(chatAdapter.getItemCount());
     }
     void callAPI(String question) {
         //okhttp
@@ -158,14 +159,20 @@ public class ChatFragment extends Fragment {
         RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
         Request request = new Request.Builder()
                 .url("https://api.openai.com/v1/completions")
-                .header("Authorization", "Bearer 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")
+                .header("Authorization", "Bearer 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")
                 .post(body)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                addResponse("Failed to load response due to " + e.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        addResponse("Failed to load response due to " + e.getMessage());
+                    }
+                });
             }
 
             @Override
@@ -176,14 +183,28 @@ public class ChatFragment extends Fragment {
                         jsonObject = new JSONObject(response.body().string());
                         JSONArray jsonArray = jsonObject.getJSONArray("choices");
                         String result = jsonArray.getJSONObject(0).getString("text");
-                        addResponse(result.trim());
+                        // Los cambios en la interfaz gráfica hay que hacerlos en el hilo de la interfaz gráfica
+                        // (estamos en una tarea de segundo plano)
+                        getActivity().runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                addResponse(result.trim());
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
 
                 } else {
-                    addResponse("Failed to load response due to " + response.body().toString());
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            addResponse("Failed to load response due to " + response.body().toString());
+                        }
+                    });
                 }
             }
         });
