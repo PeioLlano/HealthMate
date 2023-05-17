@@ -4,6 +4,8 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -11,9 +13,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -29,6 +35,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.healthmate.Ejercicio.AddEjercicioDialog;
+import com.example.healthmate.Login.LoginFragment;
 import com.example.healthmate.Login.LoginFragmentDirections;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
@@ -48,6 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     /* Otros atributos */
     private NavController navController;
+    private Button botonDesplegable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +66,8 @@ public class MainActivity extends AppCompatActivity
 
         drawerLayout = findViewById(R.id.my_drawer_layout);
 
-        Button botonDesplegable = findViewById(R.id.botonDesplegable);
+        botonDesplegable = findViewById(R.id.botonDesplegable);
+
         botonDesplegable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,26 +81,66 @@ public class MainActivity extends AppCompatActivity
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bnvOpciones, navController);
 
-        /*
         NavigationView navigationView = findViewById(R.id.nvSidebar);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.shareFragment:
-                        makeText(MainActivity.this, "Has pulsado el botón compartir", LENGTH_SHORT).show();
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                        sendIntent.setType("text/plain");
+
+                        Intent shareIntent = Intent.createChooser(sendIntent, null);
+                        startActivity(shareIntent);
                         break;
+
+                    case R.id.about:
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        alertDialog.setTitle("HealthMate");
+                        alertDialog.setMessage("\"¡Bienvenido a nuestra aplicación!\n" +
+                                "\n" +
+                                "En HealthMate, nos dedicamos a proporcionarte una experiencia única y enriquecedora para tu bienestar y salud. Nuestra misión es ayudarte a llevar un estilo de vida saludable, brindándote herramientas y recursos que te permitan alcanzar tus metas de forma fácil y divertida.\n" +
+                                "\n" +
+                                "¡Gracias por elegirnos!\n" +
+                                "\n" +
+                                "El equipo de HealthMate\"");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        alertDialog.show();
+                        break;
+
                     case R.id.logoutFragment:
-                        makeText(MainActivity.this, "Has pulsado el botón logout", LENGTH_SHORT).show();
+                        SharedPreferences preferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("loged_user", "");
+                        editor.commit();
+
+                        // Ir a login
+                        Fragment newFragment = new LoginFragment();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                        transaction.replace(R.id.nav_host_fragment, newFragment);
+
+                        transaction.commit();
+
                         break;
                 }
 
-                //drawerLayout.closeDrawer(GravityCompat.START);
+                drawerLayout.closeDrawer(Gravity.LEFT);
                 return true;
 
             }
         });
-        */
+
+        TextView tvUsername = navigationView.findViewById(R.id.tvUsername);
+        //tvUsername.setText(cargarLogeado());
     }
 
 
@@ -106,47 +155,21 @@ public class MainActivity extends AppCompatActivity
         bnvOpciones.setVisibility(View.INVISIBLE);
     }
 
+    public void disableOptions() {
+        botonDesplegable.setVisibility(View.INVISIBLE);
+        botonDesplegable.setClickable(false);
+    }
+
+    public void enableOptions() {
+        botonDesplegable.setVisibility(View.VISIBLE);
+        botonDesplegable.setClickable(true);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_abajo, menu);
         return true;
     }
-
-    /*@Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        // Obtener el id del elemento seleccionado y mostrar un Toast con su nombre
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.pantallaPrincipalFragment:
-                Toast.makeText(this, "home", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.sport:
-                Toast.makeText(this, "sport", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.mapaFragment:
-                Toast.makeText(this, "map", Toast.LENGTH_SHORT).show();
-                *//*Intent intentMa = new Intent(PantallaPrincipal.this, Mapa.class);
-                intentMa.putExtra("usuario", username);
-                startActivity(intentMa);
-                PantallaPrincipal.this.finish();*//*
-                break;
-            case R.id.medicionesFragment:
-                Toast.makeText(this, "measure", Toast.LENGTH_SHORT).show();
-                *//*Intent intentMe = new Intent(PantallaPrincipal.this, Mediciones.class);
-                intentMe.putExtra("usuario", username);
-                startActivity(intentMe);
-                PantallaPrincipal.this.finish();*//*
-                break;
-            case R.id.chatFragment:
-                Toast.makeText(this, "chat", Toast.LENGTH_SHORT).show();
-                *//*Intent intentC = new Intent(PantallaPrincipal.this, Chat.class);
-                intentC.putExtra("usuario", username);
-                startActivity(intentC);
-                PantallaPrincipal.this.finish();*//*
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

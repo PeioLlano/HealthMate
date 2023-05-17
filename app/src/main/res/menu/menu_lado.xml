@@ -6,6 +6,12 @@
         android:id="@+id/shareFragment"
         android:title="Share"
         android:icon="@drawable/share" />
+
+    <item
+        android:id="@+id/about"
+        android:title="About"
+        android:icon="@drawable/about" />
+
     <item
         android:id="@+id/logoutFragment"
         android:title="Log Out"

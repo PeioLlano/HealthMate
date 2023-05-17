@@ -25,6 +25,7 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.example.healthmate.MainActivity;
 import com.example.healthmate.R;
 
 import java.util.ArrayList;
@@ -67,6 +68,8 @@ public class PantallaPrincipalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         listenerPantallaPrincipalFragment.mostrarBarraDeNavegacion();
+
+        ((MainActivity) getActivity()).enableOptions();
 
         /* RECUPERAR DATOS DEL PARTIDO SELECCIONADO */
         if (getArguments() != null) {

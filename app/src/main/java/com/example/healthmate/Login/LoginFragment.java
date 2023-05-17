@@ -25,6 +25,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.healthmate.MainActivity;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.InsertWorker;
 import com.example.healthmate.Workers.SelectWorker;
@@ -68,6 +69,8 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         cargarLogeado();
+
+        ((MainActivity) getActivity()).disableOptions();
 
         eUsername = view.findViewById(R.id.eUsername);
         ePassword = view.findViewById(R.id.ePassword);
