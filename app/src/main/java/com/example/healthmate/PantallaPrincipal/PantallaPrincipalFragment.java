@@ -1,10 +1,14 @@
 package com.example.healthmate.PantallaPrincipal;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.Manifest;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -26,6 +30,8 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.example.healthmate.MainActivity;
+import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioNotificationHelper;
+import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioReceiver;
 import com.example.healthmate.R;
 
 import java.util.ArrayList;
@@ -70,6 +76,15 @@ public class PantallaPrincipalFragment extends Fragment {
         listenerPantallaPrincipalFragment.mostrarBarraDeNavegacion();
 
         ((MainActivity) getActivity()).enableOptions();
+
+        NoEjercicioNotificationHelper.scheduleNotification(requireContext());
+
+        //Pedimos los permisos para notificaciones si es que no los tenemos
+        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)!=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new
+                    String[]{Manifest.permission.POST_NOTIFICATIONS}, 11);
+        }
 
         /* RECUPERAR DATOS DEL PARTIDO SELECCIONADO */
         if (getArguments() != null) {

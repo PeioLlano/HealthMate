@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -87,12 +90,21 @@ public class MainActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.shareFragment:
+                        String appInfo = "¡Descubre HealthMate, tu compañero de salud personalizado!\n\n" +
+                                "HealthMate es una aplicación diseñada para ayudarte a mejorar tu bienestar y llevar un estilo de vida saludable. Con una variedad de características y funciones, te ofrece las herramientas necesarias para gestionar tus mediciones de ejercicio, controlar tus hábitos alimenticios, hacer un seguimiento de tu progreso y mucho más.\n\n" +
+                                "Principales características de HealthMate:\n" +
+                                "- Registra tus ejercicios: Mantén un registro de tus actividades físicas, como correr, nadar, andar en bicicleta, etc., para un seguimiento efectivo de tu rutina de ejercicios.\n" +
+                                "- Gráficos y estadísticas: Visualiza tu progreso a través de gráficos y estadísticas detalladas, lo que te permitirá evaluar tus avances y establecer metas realistas.\n" +
+                                "- Recordatorios y alarmas: Configura recordatorios y alarmas personalizadas para mantenerte motivado y no olvidar tus actividades y hábitos saludables.\n\n" +
+                                "Descarga HealthMate hoy mismo y comienza a cuidar de tu salud y bienestar de manera fácil y efectiva.\n\n" +
+                                "¡Mejora tu vida con HealthMate!";
+
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, appInfo);
                         sendIntent.setType("text/plain");
 
-                        Intent shareIntent = Intent.createChooser(sendIntent, null);
+                        Intent shareIntent = Intent.createChooser(sendIntent, "Compartir HealthMate");
                         startActivity(shareIntent);
                         break;
 
