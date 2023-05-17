@@ -41,12 +41,15 @@ import com.example.healthmate.Workers.DeleteWorker;
 import com.example.healthmate.Workers.InsertWorker;
 import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -369,37 +372,50 @@ public class MedicionesFragment extends Fragment {
             Document documento = new Document();
             PdfWriter.getInstance(documento, fos);
 
+            // Define los colores personalizados
+            BaseColor colorAzul = new BaseColor(33, 150, 243);
+            BaseColor colorVerde = new BaseColor(165,165, 167);
+
+            // Define los estilos de fuente personalizados
+            Font tituloFont = FontFactory.getFont("times new roman", 22, Font.BOLD, colorAzul);
+            Font encabezadoFont = FontFactory.getFont("times new roman", 12, Font.BOLD);
+            Font contenidoFont = FontFactory.getFont("times new roman", 12);
+
             documento.open();
 
-            Paragraph titulo = new Paragraph(
-                    "HealthMate    -    Lista de mediciones\n\n",
-                    FontFactory.getFont("times new roman", 22, Font.BOLD)
-            );
+            // Agrega el título con un fondo azul claro
+            Paragraph titulo = new Paragraph("HealthMate - Lista de mediciones\n\n", tituloFont);
             titulo.setAlignment(Element.ALIGN_CENTER);
+            titulo.setSpacingAfter(20f);
+            //titulo.setBackgroundColor(new BaseColor(197, 232, 255));
             documento.add(titulo);
 
+            // Crea la tabla con colores de fondo alternados para las filas
             PdfPTable tabla = new PdfPTable(4);
+            tabla.setWidthPercentage(100);
             tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
-            tabla.deleteBodyRows();
+            tabla.setSpacingBefore(10f);
 
-            tabla.addCell("Titulo");
-            tabla.addCell("Fecha");
-            tabla.addCell("Tipo");
-            tabla.addCell("Medición");
+            tabla.addCell(createCell("Titulo", encabezadoFont, colorVerde));
+            tabla.addCell(createCell("Fecha", encabezadoFont, colorVerde));
+            tabla.addCell(createCell("Tipo", encabezadoFont, colorVerde));
+            tabla.addCell(createCell("Medición", encabezadoFont, colorVerde));
+
+            // Define los colores de fondo alternados para las filas de la tabla
+            BaseColor colorFondo1 = new BaseColor(255, 255, 255); // Blanco
+            BaseColor colorFondo2 = new BaseColor(240, 240, 240); // Gris claro
+            boolean fondoAlternado = false;
 
             // Define el formato deseado para la fecha
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-
             for (int i = 0; i < mediciones.size(); i++) {
-                tabla.addCell(mediciones.get(i).getTitulo());
+                tabla.addCell(createCell(mediciones.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                tabla.addCell(createCell(dateFormat.format(mediciones.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                tabla.addCell(createCell(mediciones.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                tabla.addCell(createCell(String.valueOf(mediciones.get(i).getMedicion()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
 
-                // Formatea la fecha utilizando el formato definido
-                String formattedDate = dateFormat.format(mediciones.get(i).getFecha());
-                tabla.addCell(formattedDate);
-
-                tabla.addCell(mediciones.get(i).getTipo());
-                tabla.addCell(String.valueOf(mediciones.get(i).getMedicion()));
+                fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
             }
 
             documento.add(tabla);
@@ -413,6 +429,14 @@ public class MedicionesFragment extends Fragment {
         } catch (DocumentException e) {
             e.printStackTrace();
         }
+    }
+
+    // Método auxiliar para crear una celda de la tabla con estilo personalizado
+    private PdfPCell createCell(String contenido, Font font, BaseColor backgroundColor) {
+        PdfPCell cell = new PdfPCell(new Phrase(contenido, font));
+        cell.setPadding(8f);
+        cell.setBackgroundColor(backgroundColor);
+        return cell;
     }
 
     private void openPDF() {
