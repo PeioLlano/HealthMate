@@ -1,11 +1,20 @@
 package com.example.healthmate.Mediciones;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.work.Constraints;
@@ -14,6 +23,7 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +41,22 @@ import com.example.healthmate.Workers.DeleteWorker;
 import com.example.healthmate.Workers.InsertWorker;
 import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -109,6 +130,19 @@ public class MedicionesFragment extends Fragment {
                 AddMedicionDialog dialog = new AddMedicionDialog();
                 dialog.show(getParentFragmentManager(), "DialogoAñadir");
             }
+        });
+
+        // Obtenemos la referencia al botón flotante de descargar
+        FloatingActionButton fabDownload = view.findViewById(R.id.fabDownload);
+
+        // Configuramos el listener para el botón de descargar
+        fabDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                verificarPermisos(view);
+                crearPDF();
+            }
+
         });
 
         // Obtenemos la referencia a la vista de lista de mediciones
@@ -315,6 +349,115 @@ public class MedicionesFragment extends Fragment {
             llVacia.setVisibility(View.GONE);
         } else {
             llVacia.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void crearPDF() {
+        try {
+            String carpeta = "/archivospdf";
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + carpeta;
+
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+                Toast.makeText(requireContext(), "CARPETA CREADA", Toast.LENGTH_SHORT).show();
+            }
+
+            File archivo = new File(dir, "mediciones.pdf");
+            FileOutputStream fos = new FileOutputStream(archivo);
+
+            Document documento = new Document();
+            PdfWriter.getInstance(documento, fos);
+
+            documento.open();
+
+            Paragraph titulo = new Paragraph(
+                    "HealthMate    -    Lista de mediciones\n\n",
+                    FontFactory.getFont("times new roman", 22, Font.BOLD)
+            );
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+
+            PdfPTable tabla = new PdfPTable(4);
+            tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tabla.deleteBodyRows();
+
+            tabla.addCell("Titulo");
+            tabla.addCell("Fecha");
+            tabla.addCell("Tipo");
+            tabla.addCell("Medición");
+
+            // Define el formato deseado para la fecha
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+
+            for (int i = 0; i < mediciones.size(); i++) {
+                tabla.addCell(mediciones.get(i).getTitulo());
+
+                // Formatea la fecha utilizando el formato definido
+                String formattedDate = dateFormat.format(mediciones.get(i).getFecha());
+                tabla.addCell(formattedDate);
+
+                tabla.addCell(mediciones.get(i).getTipo());
+                tabla.addCell(String.valueOf(mediciones.get(i).getMedicion()));
+            }
+
+            documento.add(tabla);
+
+            documento.close();
+
+            openPDF();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openPDF() {
+        File pdfFile = new File(Environment.getExternalStorageDirectory() + "/Download/archivospdf/mediciones.pdf");
+
+        Uri pdfUri = FileProvider.getUriForFile(requireContext(), "com.example.healthmate.fileprovider", pdfFile);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(pdfUri, "application/pdf");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), "No se encontró ninguna aplicación para abrir el archivo PDF", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private void verificarPermisos(View view) {
+        if (checkPermission()){
+
+        }
+        else {
+            //Android is below 11(R)
+            ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    100
+            );
+        }
+    }
+
+    public boolean checkPermission(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            //Android is 11(R) or above
+            return Environment.isExternalStorageManager();
+        }
+        else{
+            //Android is below 11(R)
+            int write = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int read = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+
+            return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED;
         }
     }
 }
