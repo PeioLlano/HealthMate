@@ -119,7 +119,11 @@ public class EjercicioFragment extends Fragment {
                                 .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
                                 .collect(Collectors.toCollection(ArrayList::new));
                         Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
-                        pAdapter.notifyDataSetChanged();
+
+                        EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), ejercicios);
+                        lvEjercicio.setAdapter(pAdapterFiltro);
+
+                        //pAdapter.notifyDataSetChanged();
                     }
                 });
     }
