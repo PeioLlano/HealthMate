@@ -208,13 +208,18 @@ public class MedicinasFragment extends Fragment {
         lista.add("Domingo");
 
         ArrayList<String> lista2 = new ArrayList<>();
-        lista.add("10:00");
-        lista.add("18:00");
-        lista.add("22:00");
+        lista2.add("Lunes");
+        lista2.add("Martes");
+        lista2.add("Miercoles");
+        lista2.add("Jueves");
+        lista2.add("Viernes");
+        lista2.add("Sabado");
+        lista2.add("Domingo");
 
-        medicinas.add(new Medicina(1,"Ibuprofeno", lista, lista2));
-        medicinas.add(new Medicina(2,"Gelocatil", lista, lista2));
-        medicinas.add(new Medicina(3,"Cronotolis", lista, lista2));
+
+        medicinas.add(new Medicina(1,"Ibuprofeno","10:00", lista));
+        medicinas.add(new Medicina(2,"Gelocatil","20:00", lista));
+        medicinas.add(new Medicina(3,"Cronotolis","15:00", lista2));
 
 
         // Creamos un adaptador para la lista de medicinas
@@ -366,7 +371,7 @@ public class MedicinasFragment extends Fragment {
 
             for (int i = 0; i < medicinas.size(); i++) {
                 tabla.addCell(createCell(medicinas.get(i).getNombre(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(medicinas.get(i).concatenateWithCommasAndAmpersand(medicinas.get(i).getHoras()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                tabla.addCell(createCell(medicinas.get(i).getHora(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
                 tabla.addCell(createCell(medicinas.get(i).concatenateWithCommasAndAmpersand(medicinas.get(i).getDias()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
                 tabla.addCell(createCell(String.valueOf(0), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
 

@@ -8,15 +8,15 @@ public class Medicina {
 
     private Integer codigo;
     private String nombre;
-    private ArrayList<String> horas;
+    private String hora;
     private ArrayList<String> dias;
 
     //Dejo abierto a meter mas cosas...
 
-    public Medicina(Integer codigo, String nombre, ArrayList<String> horas, ArrayList<String> dias) {
+    public Medicina(Integer codigo, String nombre, String hora, ArrayList<String> dias) {
         this.codigo = codigo;
         this.nombre = nombre;
-        this.horas = horas;
+        this.hora = hora;
         this.dias = dias;
     }
 
@@ -28,8 +28,8 @@ public class Medicina {
         return nombre;
     }
 
-    public ArrayList<String> getHoras() {
-        return horas;
+    public String getHora() {
+        return hora;
     }
 
     public ArrayList<String> getDias() {

@@ -58,13 +58,16 @@ public class MedicinaAdapter extends BaseAdapter {
         TextView tvDias = view.findViewById(R.id.tvDias);
         TextView tvHora = view.findViewById(R.id.tvHora);
 
+        ImageView tvImagen = view.findViewById(R.id.ivMedicina);
+        tvImagen.setImageResource(R.drawable.pills);
+
         // Obtener la medicina en la posición actual
         Medicina medicina = medicinas.get(position);
 
         // Establecer los valores de los elementos de la vista con los datos de la medicina actual
         etNombre.setText(medicina.getNombre());
         tvDias.setText(medicina.concatenateWithCommasAndAmpersand(medicina.getDias()));
-        tvHora.setText(medicina.concatenateWithCommasAndAmpersand(medicina.getHoras()));
+        tvHora.setText(medicina.getHora());
 
         // Devolver la vista del item de la lista con los datos actualizados
         return view;
