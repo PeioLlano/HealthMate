@@ -115,15 +115,13 @@ public class EjercicioFragment extends Fragment {
                         Log.d("EjercicioFragment", "tipo = " + tipo);
 
                         // FILTRAR POR TIPO
-                        ejercicios = ejercicios.stream()
+                        ArrayList<Ejercicio> listaFiltrada = ejercicios.stream()
                                 .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
                                 .collect(Collectors.toCollection(ArrayList::new));
                         Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
 
-                        EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), ejercicios);
+                        EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), listaFiltrada);
                         lvEjercicio.setAdapter(pAdapterFiltro);
-
-                        //pAdapter.notifyDataSetChanged();
                     }
                 });
     }
