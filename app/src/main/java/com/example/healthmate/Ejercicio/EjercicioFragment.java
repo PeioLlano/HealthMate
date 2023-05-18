@@ -66,6 +66,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EjercicioFragment extends Fragment {
 
@@ -100,6 +102,26 @@ public class EjercicioFragment extends Fragment {
                         añadirEjercicio(ejercicioNuevo);
                     }
                 });
+
+        /*
+         * Listener para recoger los datos del nuevo evento enviado por el diálogo
+         * 'FilterEjercicioDialog'.
+         */
+        getParentFragmentManager().setFragmentResultListener(
+                "filtro", this, new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        String tipo = bundle.getString("Tipo");
+                        Log.d("EjercicioFragment", "tipo = " + tipo);
+
+                        // FILTRAR POR TIPO
+                        ejercicios = ejercicios.stream()
+                                .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
+                                .collect(Collectors.toCollection(ArrayList::new));
+                        Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
+                        pAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Nullable
@@ -123,14 +145,16 @@ public class EjercicioFragment extends Fragment {
         fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show();
+                FilterEjercicioDialog dialog = new FilterEjercicioDialog();
+                dialog.show(getParentFragmentManager(), "DialogoFiltrar");
             }
         });
 
         // Obtenemos la referencia al botón flotante de añadir
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
 
-        // Configuramos el listener para el botón de filtrar
+        // Configuramos el listener para el botón de añadir
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

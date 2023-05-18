@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.R;
 
 import java.util.ArrayList;
@@ -81,7 +80,6 @@ public class AddEjercicioDialog extends AppCompatDialogFragment {
                             nuevoEjercicio.putString("tipo", sTipo.getSelectedItem().toString());
                             getParentFragmentManager()
                                     .setFragmentResult("nuevoEjercicio", nuevoEjercicio);
-                            // miListener.añadirEjercicio(etTitulo.getText().toString(), new Date(),Double.parseDouble(etDistancia.getText().toString()), sTipo.getSelectedItem().toString());
                         }
                         else{
                             int tiempoToast= Toast.LENGTH_SHORT;
