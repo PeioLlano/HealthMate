@@ -1,5 +1,8 @@
 package com.example.healthmate.Modelo;
 
+import com.anychart.scales.DateTime;
+
+import java.util.Calendar;
 import java.util.Date;
 
 public class Ejercicio {
@@ -34,6 +37,15 @@ public class Ejercicio {
     }
 
     public Date getFecha() {
+        return fecha;
+    }
+
+    public String getDiaString() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(fecha);
+        String fecha = String.valueOf(c.get(Calendar.DATE))
+                + '/' + String.valueOf(c.get(Calendar.MONTH))
+                + '/' + String.valueOf(c.get(Calendar.YEAR));
         return fecha;
     }
 

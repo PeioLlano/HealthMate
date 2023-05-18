@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import com.example.healthmate.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class FilterEjercicioDialog extends AppCompatDialogFragment {
 
@@ -44,7 +47,7 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
         cbTipo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("FiltrarEjercicioDialog", "Clicado = " + cbTipo.isChecked());
+                Log.d("FiltrarEjercicioDialog", "Clicado tipo = " + cbTipo.isChecked());
                 if (cbTipo.isChecked()) {
                     tipos.add("Running");
                     tipos.add("Nadar");
@@ -58,6 +61,27 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                 } else {
                     tipos.clear();
                     sTipo.setVisibility(View.INVISIBLE);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Preparar filtro fecha
+        DatePicker dpFecha = view.findViewById(R.id.dpFecha);
+        dpFecha.setEnabled(false);
+        dpFecha.setVisibility(View.INVISIBLE);
+
+        // Inicializar checkbox para activar/desactivar filtro de tipo de ejercicio
+        CheckBox cbFecha = view.findViewById(R.id.cbFecha);
+        cbFecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("FiltrarEjercicioDialog", "Clicado fecha = " + cbFecha.isChecked());
+                if (cbFecha.isChecked()) {
+                    dpFecha.setEnabled(true);
+                    dpFecha.setVisibility(View.VISIBLE);
+                } else {
+                    dpFecha.setVisibility(View.INVISIBLE);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -79,6 +103,19 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                             filtro.putString("Tipo", sTipo.getSelectedItem().toString());
                         } else {
                             filtro.putString("Tipo", null);
+                        }
+
+                        if (cbFecha.isChecked()) {
+                            int dia = dpFecha.getDayOfMonth();
+                            int mes = dpFecha.getMonth();
+                            int año =  dpFecha.getYear();
+
+                            String fecha =  String.valueOf(dia)
+                                    + '/' + String.valueOf(mes)
+                                    + '/' + String.valueOf(año);
+                            filtro.putString("Fecha", fecha);
+                        } else {
+                            filtro.putString("Fecha", null);
                         }
 
                         getParentFragmentManager()

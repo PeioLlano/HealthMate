@@ -111,13 +111,25 @@ public class EjercicioFragment extends Fragment {
                 "filtro", this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        // FILTRAR POR TIPO
                         String tipo = bundle.getString("Tipo");
                         Log.d("EjercicioFragment", "tipo = " + tipo);
+                        ArrayList<Ejercicio> listaFiltrada = ejercicios;
+                        if(tipo != null) {
+                            listaFiltrada = ejercicios.stream()
+                                    .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
 
-                        // FILTRAR POR TIPO
-                        ArrayList<Ejercicio> listaFiltrada = ejercicios.stream()
-                                .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
-                                .collect(Collectors.toCollection(ArrayList::new));
+                        // FILTRAR POR FECHA
+                        String fecha = bundle.getString("Fecha");
+                        Log.d("EjercicioFragment", "fecha = " + fecha);
+                        if (fecha != null) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(ejercicio -> ejercicio.getDiaString().equals(fecha))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+
                         Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
 
                         EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), listaFiltrada);
