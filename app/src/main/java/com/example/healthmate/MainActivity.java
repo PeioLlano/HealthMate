@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -47,7 +48,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         bnvOpciones = findViewById(R.id.bnvOpciones);
