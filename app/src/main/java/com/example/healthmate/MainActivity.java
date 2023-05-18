@@ -131,7 +131,8 @@ public class MainActivity extends AppCompatActivity
                         break;
 
                     case R.id.medicines:
-                        makeText(MainActivity.this, "TO DO", LENGTH_SHORT).show();
+                        //makeText(MainActivity.this, "TO DO", LENGTH_SHORT).show();
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack(R.id.medicinasFragment, false);
 
                         break;
                 }

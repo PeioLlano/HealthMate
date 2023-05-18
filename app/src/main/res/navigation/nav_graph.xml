@@ -59,5 +59,10 @@
         android:name="com.example.healthmate.Ejercicio.EjercicioFragment"
         android:label="EjercicioFragment"
         tools:layout="@layout/fragment_ejercicio"/>
+    <fragment
+        android:id="@+id/medicinasFragment"
+        android:name="com.example.healthmate.Medicinas.MedicinasFragment"
+        android:label="MedicinasFragment"
+        tools:layout="@layout/fragment_medicinas"/>
 
 </navigation>
