@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -15,31 +14,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.healthmate.Ejercicio.AddEjercicioDialog;
-import com.example.healthmate.Login.LoginFragment;
-import com.example.healthmate.Login.LoginFragmentDirections;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -135,12 +120,13 @@ public class MainActivity extends AppCompatActivity
                         editor.commit();
 
                         // Ir a login
-                        Fragment newFragment = new LoginFragment();
+                        /*Fragment newFragment = new LoginFragment();
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
                         transaction.replace(R.id.nav_host_fragment, newFragment);
 
-                        transaction.commit();
+                        transaction.commit();*/
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack(R.id.loginFragment, false);
 
                         break;
 
@@ -175,11 +161,13 @@ public class MainActivity extends AppCompatActivity
     public void disableOptions() {
         botonDesplegable.setVisibility(View.INVISIBLE);
         botonDesplegable.setClickable(false);
+        bnvOpciones.setVisibility(View.GONE);
     }
 
     public void enableOptions() {
         botonDesplegable.setVisibility(View.VISIBLE);
         botonDesplegable.setClickable(true);
+        bnvOpciones.setVisibility(View.VISIBLE);
     }
 
     @Override
