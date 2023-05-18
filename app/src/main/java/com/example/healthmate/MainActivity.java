@@ -119,20 +119,13 @@ public class MainActivity extends AppCompatActivity
                         editor.putString("loged_user", "");
                         editor.commit();
 
-                        // Ir a login
-                        /*Fragment newFragment = new LoginFragment();
-                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                        transaction.replace(R.id.nav_host_fragment, newFragment);
-
-                        transaction.commit();*/
                         Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack(R.id.loginFragment, false);
 
                         break;
 
                     case R.id.medicines:
                         //makeText(MainActivity.this, "TO DO", LENGTH_SHORT).show();
-                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).popBackStack(R.id.medicinasFragment, false);
+                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.medicinasFragment);
 
                         break;
                 }
