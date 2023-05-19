@@ -46,6 +46,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Medicinas.MedicinasActivity"
+            android:exported="true" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
