@@ -33,7 +33,9 @@ import androidx.work.WorkManager;
 
 import com.example.healthmate.MainActivity;
 import com.example.healthmate.Medicinas.MedicinaAdapter;
+import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.Modelo.Medicina;
+import com.example.healthmate.Modelo.Medicion;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.DeleteWorker;
 import com.example.healthmate.Workers.InsertWorker;
@@ -60,6 +62,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 public class MedicinasFragment extends Fragment {
@@ -76,13 +79,18 @@ public class MedicinasFragment extends Fragment {
 
         /*
          * Listener para recoger los datos del nuevo evento enviado por el diálogo
-         * 'AddMedicinaDialog'.
+         * 'AddMedicionDialog'.
          */
         getParentFragmentManager().setFragmentResultListener(
                 "nuevaMedicina", this, new FragmentResultListener() {
                     @Override
                     public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        String nombre = bundle.getString("nombre");
+                        String dias = bundle.getString("dias");
+                        String hora = bundle.getString("hora");
 
+                        Medicina medicinaNuevo = new Medicina(-1, nombre,hora,stringArrayList(dias));
+                        añadirMedicina(medicinaNuevo);
                     }
                 });
     }
@@ -101,25 +109,15 @@ public class MedicinasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Obtenemos la referencia al botón flotante de filtrar
-        FloatingActionButton fabFilter = view.findViewById(R.id.fabFilter);
-
-        // Configuramos el listener para el botón de filtrar
-        fabFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         // Obtenemos la referencia al botón flotante de añadir
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
 
-        // Configuramos el listener para el botón de filtrar
+        // Configuramos el listener para el botón de añadir
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                AddMedicinaDialog dialog = new AddMedicinaDialog();
+                dialog.show(getParentFragmentManager(), "DialogoAñadir");
             }
         });
 
@@ -145,12 +143,12 @@ public class MedicinasFragment extends Fragment {
         // Ejemplo hasta que decidimamos como almacenamos los datos
         medicinas = new ArrayList<>();
 
-        /*//Pedimos todos los ejercicios que tenga el usuario que hemos recibido
+        //Pedimos todos los ejercicios que tenga el usuario que hemos recibido
         final JSONArray[] jsonArray = {new JSONArray()};
 
         Data data = new Data.Builder()
                 .putString("tabla", "Medicinas")
-                .putString("condicion", "Usuario='"+((MainActivity) getActivity()).cargarLogeado()+"'")
+                .putString("condicion", "Usuario='"+((MedicinasActivity) getActivity()).cargarLogeado()+"'")
                 .build();
 
         Constraints constr = new Constraints.Builder()
@@ -177,19 +175,11 @@ public class MedicinasFragment extends Fragment {
                                 for (int i = 0; i < jsonArray[0].length(); i++) {
                                     JSONObject obj = jsonArray[0].getJSONObject(i);
                                     Integer Codigo = obj.getInt("Codigo");
-                                    String Titulo = obj.getString("Titulo");
-                                    String Medicina = obj.getString("Medicina");
-                                    String Tipo = obj.getString("Tipo");
+                                    String Nombre = obj.getString("Nombre");
+                                    String Hora = obj.getString("Hora");
+                                    String Dias = obj.getString("Dias");
 
-
-                                    Date fechaImp;
-                                    try {
-                                        fechaImp = new Date(obj.getString("Fecha"));
-                                    } catch (Exception e) {
-                                        fechaImp = new Date();
-                                    }
-
-                                    medicinas.add(new Medicina(Codigo,Titulo,fechaImp,Medicina,Tipo));
+                                    medicinas.add(new Medicina(Codigo,Nombre,Hora,stringArrayList(Dias)));
 
                                     pAdapter.notifyDataSetChanged();
 
@@ -201,26 +191,7 @@ public class MedicinasFragment extends Fragment {
                         actualizarVacioLleno(medicinas);
                     }
                 });
-        WorkManager.getInstance(requireContext()).enqueue(req);*/
-        ArrayList<String> lista = new ArrayList<>();
-        lista.add("Lunes");
-        lista.add("Jueves");
-        lista.add("Domingo");
-
-        ArrayList<String> lista2 = new ArrayList<>();
-        lista2.add("Lunes");
-        lista2.add("Martes");
-        lista2.add("Miercoles");
-        lista2.add("Jueves");
-        lista2.add("Viernes");
-        lista2.add("Sabado");
-        lista2.add("Domingo");
-
-
-        medicinas.add(new Medicina(1,"Ibuprofeno","10:00", lista));
-        medicinas.add(new Medicina(2,"Gelocatil","20:00", lista));
-        medicinas.add(new Medicina(3,"Cronotolis","15:00", lista2));
-
+        WorkManager.getInstance(requireContext()).enqueue(req);
 
         // Creamos un adaptador para la lista de medicinas
         pAdapter = new MedicinaAdapter(requireContext(), medicinas);
@@ -234,7 +205,7 @@ public class MedicinasFragment extends Fragment {
         // Creamos un cuadro de diálogo para confirmar el borrado de una medición
         AlertDialog.Builder builderG = new AlertDialog.Builder(requireContext());
         builderG.setCancelable(true);
-        builderG.setTitle(getString(R.string.delete_measurement));
+        builderG.setTitle(getString(R.string.delete_medicine));
         builderG.setPositiveButton(R.string.confirm,
             new DialogInterface.OnClickListener() {
                 @Override
@@ -242,7 +213,7 @@ public class MedicinasFragment extends Fragment {
                     // Borramos la medición seleccionada y notificamos al adaptador
                     Data data = new Data.Builder()
                             .putString("tabla", "Medicinas")
-                            .putString("condicion", "Usuario = '" + ((MainActivity) requireActivity()).cargarLogeado() + "' AND Codigo = '" + ((Medicina) pAdapter.getItem(posAborrar[0])).getCodigo() + "'")
+                            .putString("condicion", "Usuario = '" + ((MedicinasActivity) requireActivity()).cargarLogeado() + "' AND Codigo = '" + ((Medicina) pAdapter.getItem(posAborrar[0])).getCodigo() + "'")
                             .build();
 
                     Constraints constr = new Constraints.Builder()
@@ -302,7 +273,39 @@ public class MedicinasFragment extends Fragment {
 
     private void añadirMedicina(Medicina item){
 
+        //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
+        Data data = new Data.Builder()
+                .putString("tabla", "Medicinas")
+                .putStringArray("keys", new String[]{"Usuario","Nombre","Hora","Dias"})
+                .putStringArray("values", new String[]{((MedicinasActivity) getActivity()).cargarLogeado(),item.getNombre(), item.getHora(), convertListToString(item.getDias())})
+                .build();
 
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(InsertWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(requireContext());
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe(this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        Boolean resultados = status.getOutputData().getBoolean("resultado", false);
+                        if(resultados) {
+                            medicinas.add(item);
+                            pAdapter.notifyDataSetChanged();
+                            actualizarVacioLleno(medicinas);
+                        }
+                        else {
+                            Toast aviso = Toast.makeText(requireActivity(), getResources().getString(R.string.error), Toast.LENGTH_SHORT);
+                            aviso.show();
+                        }
+                    }});
     }
 
     //Actualizar lo que se ve dependiendo del tamaño de la lista.
@@ -444,4 +447,28 @@ public class MedicinasFragment extends Fragment {
             return write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED;
         }
     }
+
+    private ArrayList<String> stringArrayList(String str){
+        // Separar el string por comas y obtener un array de strings
+        String[] elementos = str.split(",");
+
+        // Crear un ArrayList y agregar los elementos al mismo
+        ArrayList<String> lista = new ArrayList<>(Arrays.asList(elementos));
+
+        return lista;
+    }
+
+    private String convertListToString(ArrayList<String> lista) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < lista.size(); i++) {
+            stringBuilder.append(lista.get(i));
+            if (i < lista.size() - 1) {
+                stringBuilder.append(",");
+            }
+        }
+
+        return stringBuilder.toString();
+    }
+
 }

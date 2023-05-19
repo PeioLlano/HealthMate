@@ -30,11 +30,11 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.healthmate.MainActivity;
 import com.example.healthmate.Medicinas.ConsumoAdapter;
 import com.example.healthmate.Modelo.Medicina;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.DeleteWorker;
+import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -48,11 +48,18 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ConsumoFragment extends Fragment {
 
@@ -66,17 +73,6 @@ public class ConsumoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-         * Listener para recoger los datos del nuevo evento enviado por el diálogo
-         * 'AddMedicinaDialog'.
-         */
-        getParentFragmentManager().setFragmentResultListener(
-                "nuevaMedicina", this, new FragmentResultListener() {
-                    @Override
-                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-
-                    }
-                });
     }
 
     @Nullable
@@ -102,12 +98,12 @@ public class ConsumoFragment extends Fragment {
         // Ejemplo hasta que decidimamos como almacenamos los datos
         consumos = new ArrayList<>();
 
-        /*//Pedimos todos los ejercicios que tenga el usuario que hemos recibido
+        //Pedimos todos los ejercicios que tenga el usuario que hemos recibido
         final JSONArray[] jsonArray = {new JSONArray()};
 
         Data data = new Data.Builder()
-                .putString("tabla", "consumos")
-                .putString("condicion", "Usuario='"+((MainActivity) getActivity()).cargarLogeado()+"'")
+                .putString("tabla", "Medicinas")
+                .putString("condicion", "Usuario='"+((MedicinasActivity) getActivity()).cargarLogeado()+"'")
                 .build();
 
         Constraints constr = new Constraints.Builder()
@@ -134,19 +130,15 @@ public class ConsumoFragment extends Fragment {
                                 for (int i = 0; i < jsonArray[0].length(); i++) {
                                     JSONObject obj = jsonArray[0].getJSONObject(i);
                                     Integer Codigo = obj.getInt("Codigo");
-                                    String Titulo = obj.getString("Titulo");
-                                    String Medicina = obj.getString("Medicina");
-                                    String Tipo = obj.getString("Tipo");
+                                    String Nombre = obj.getString("Nombre");
+                                    String Hora = obj.getString("Hora");
+                                    String Dias = obj.getString("Dias");
 
-
-                                    Date fechaImp;
-                                    try {
-                                        fechaImp = new Date(obj.getString("Fecha"));
-                                    } catch (Exception e) {
-                                        fechaImp = new Date();
+                                    for (String dia:stringArrayList(Dias)) {
+                                        if(isCurrentDayOfWeek(dia)){
+                                            consumos.add(new Medicina(Codigo,Nombre,Hora,stringArrayList(Dias)));
+                                        }
                                     }
-
-                                    consumos.add(new Medicina(Codigo,Titulo,fechaImp,Medicina,Tipo));
 
                                     pAdapter.notifyDataSetChanged();
 
@@ -158,34 +150,13 @@ public class ConsumoFragment extends Fragment {
                         actualizarVacioLleno(consumos);
                     }
                 });
-        WorkManager.getInstance(requireContext()).enqueue(req);*/
-        ArrayList<String> lista = new ArrayList<>();
-        lista.add("Lunes");
-        lista.add("Jueves");
-        lista.add("Domingo");
-
-        ArrayList<String> lista2 = new ArrayList<>();
-        lista2.add("Lunes");
-        lista2.add("Martes");
-        lista2.add("Miercoles");
-        lista2.add("Jueves");
-        lista2.add("Viernes");
-        lista2.add("Sabado");
-        lista2.add("Domingo");
-
-
-        consumos.add(new Medicina(1,"Ibuprofeno","10:00", lista));
-        consumos.add(new Medicina(2,"Gelocatil","20:00", lista));
-        consumos.add(new Medicina(3,"Cronotolis","15:00", lista2));
-
+        WorkManager.getInstance(requireContext()).enqueue(req);
 
         // Creamos un adaptador para la lista de consumos
         pAdapter = new ConsumoAdapter(requireContext(), consumos);
 
         // Configuramos el adaptador para la vista de lista de consumos
         lvconsumos.setAdapter(pAdapter);
-
-        actualizarVacioLleno(consumos);
     }
 
     //Actualizar lo que se ve dependiendo del tamaño de la lista.
@@ -196,5 +167,45 @@ public class ConsumoFragment extends Fragment {
         } else {
             llVacia.setVisibility(View.VISIBLE);
         }
+    }
+
+    private ArrayList<String> stringArrayList(String str){
+        // Separar el string por comas y obtener un array de strings
+        String[] elementos = str.split(",");
+
+        // Crear un ArrayList y agregar los elementos al mismo
+        ArrayList<String> lista = new ArrayList<>(Arrays.asList(elementos));
+
+        return lista;
+    }
+
+    public static int getDayOfWeek(String dayOfWeek) {
+        switch (dayOfWeek.toLowerCase()) {
+            case "domingo":
+                return Calendar.SUNDAY;
+            case "lunes":
+                return Calendar.MONDAY;
+            case "martes":
+                return Calendar.TUESDAY;
+            case "miercoles":
+                return Calendar.WEDNESDAY;
+            case "jueves":
+                return Calendar.THURSDAY;
+            case "viernes":
+                return Calendar.FRIDAY;
+            case "sabado":
+                return Calendar.SATURDAY;
+            default:
+                return -1; // Valor no válido
+        }
+    }
+
+    public static boolean isCurrentDayOfWeek(String dayOfWeek) {
+        Calendar calendar = Calendar.getInstance();
+        int currentDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        int targetDayOfWeek = getDayOfWeek(dayOfWeek);
+
+        return currentDayOfWeek == targetDayOfWeek;
     }
 }

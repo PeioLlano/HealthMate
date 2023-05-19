@@ -19,4 +19,5 @@
     <string name="diff_pass">Las contraseñas no coinciden.</string>
     <string name="invalid_mail">Introduzca un email valido.</string>
     <string name="fill_fields">" Rellene todos los campos. "</string>
+    <string name="delete_medicine">¿Quiere eliminar la medicación?</string>
 </resources>
