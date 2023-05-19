@@ -142,8 +142,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        TextView tvUsername = navigationView.findViewById(R.id.tvUsername);
-        //tvUsername.setText(cargarLogeado());
+        View headerView = navigationView.getHeaderView(0); // Obtiene la vista del encabezado del NavigationView
+        TextView tvUsername = headerView.findViewById(R.id.tvUsername);
+        tvUsername.setText(cargarLogeado());
     }
 
 
