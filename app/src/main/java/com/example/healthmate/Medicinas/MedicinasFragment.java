@@ -354,15 +354,14 @@ public class MedicinasFragment extends Fragment {
             documento.add(titulo);
 
             // Crea la tabla con colores de fondo alternados para las filas
-            PdfPTable tabla = new PdfPTable(4);
+            PdfPTable tabla = new PdfPTable(3);
             tabla.setWidthPercentage(100);
             tabla.setHorizontalAlignment(Element.ALIGN_CENTER);
             tabla.setSpacingBefore(10f);
 
             tabla.addCell(createCell("Nombre", encabezadoFont, colorVerde));
-            tabla.addCell(createCell("Dias", encabezadoFont, colorVerde));
-            tabla.addCell(createCell("Horas", encabezadoFont, colorVerde));
-            tabla.addCell(createCell("Cantidad", encabezadoFont, colorVerde));
+            tabla.addCell(createCell("Días", encabezadoFont, colorVerde));
+            tabla.addCell(createCell("Hora", encabezadoFont, colorVerde));
 
             // Define los colores de fondo alternados para las filas de la tabla
             BaseColor colorFondo1 = new BaseColor(255, 255, 255); // Blanco
@@ -374,9 +373,8 @@ public class MedicinasFragment extends Fragment {
 
             for (int i = 0; i < medicinas.size(); i++) {
                 tabla.addCell(createCell(medicinas.get(i).getNombre(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(medicinas.get(i).getHora(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
                 tabla.addCell(createCell(medicinas.get(i).concatenateWithCommasAndAmpersand(medicinas.get(i).getDias()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(String.valueOf(0), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                tabla.addCell(createCell(medicinas.get(i).getHora(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
 
                 fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
             }

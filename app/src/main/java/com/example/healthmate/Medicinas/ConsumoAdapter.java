@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,13 @@ public class ConsumoAdapter extends BaseAdapter {
 
     private ArrayList<Medicina> medicinas;
     private LayoutInflater inflater;
+
+    private CheckBoxListener miListener;
+
+    public interface CheckBoxListener{
+        void añadirConsumo(Medicina m);
+        void eliminarConsumo(Medicina m);
+    }
 
     // Constructor del adaptador
     public ConsumoAdapter(Context context, ArrayList<Medicina> vMedicinas) {
@@ -52,6 +60,8 @@ public class ConsumoAdapter extends BaseAdapter {
         // Inflar la vista del item de la lista
         view = inflater.inflate(R.layout.item_consumo, null);
 
+        miListener = (CheckBoxListener) viewGroup.getContext();
+
         // Obtener las referencias a los elementos de la vista del item de la lista
         TextView etNombre = view.findViewById(R.id.etNombre);
         TextView tvHora = view.findViewById(R.id.tvHora);
@@ -65,6 +75,20 @@ public class ConsumoAdapter extends BaseAdapter {
         // Establecer los valores de los elementos de la vista con los datos de la medicina actual
         etNombre.setText(medicina.getNombre());
         tvHora.setText(medicina.getHora());
+
+        CheckBox check = view.findViewById(R.id.check);
+        check.setChecked(medicina.getConsumo());
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (check.isChecked()){
+                    miListener.añadirConsumo(medicina);
+                }
+                else{
+                    miListener.eliminarConsumo(medicina);
+                }
+            }
+        });
 
         // Devolver la vista del item de la lista con los datos actualizados
         return view;

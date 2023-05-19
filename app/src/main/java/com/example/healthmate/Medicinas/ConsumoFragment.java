@@ -68,6 +68,7 @@ public class ConsumoFragment extends Fragment {
     private View llVacia;
     private ConsumoAdapter pAdapter;
     private ArrayList<Medicina> consumos;
+    private ArrayList<Boolean> checks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,18 +137,55 @@ public class ConsumoFragment extends Fragment {
 
                                     for (String dia:stringArrayList(Dias)) {
                                         if(isCurrentDayOfWeek(dia)){
-                                            consumos.add(new Medicina(Codigo,Nombre,Hora,stringArrayList(Dias)));
+
+                                            Medicina med = new Medicina(Codigo,Nombre,Hora,stringArrayList(Dias));
+
+                                            // Define el formato deseado para la fecha
+                                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
+                                            // Formatea la fecha utilizando el formato definido
+                                            String formattedDate = dateFormat.format(new Date());
+
+                                            Data data2 = new Data.Builder()
+                                                    .putString("tabla", "Consumo")
+                                                    .putString("condicion", "Codigo='"+med.getCodigo()+"' AND Fecha='" + formattedDate + "'")
+                                                    .build();
+
+                                            Constraints constr2 = new Constraints.Builder()
+                                                    .setRequiredNetworkType(NetworkType.CONNECTED)
+                                                    .build();
+
+                                            OneTimeWorkRequest req2 = new OneTimeWorkRequest.Builder(SelectWorker.class)
+                                                    .setConstraints(constr2)
+                                                    .setInputData(data2)
+                                                    .build();
+
+                                            WorkManager workManager2 = WorkManager.getInstance(requireContext());
+                                            workManager2.enqueue(req2);
+
+                                            workManager2.getWorkInfoByIdLiveData(req2.getId())
+                                                    .observe(requireActivity(), status2 -> {
+                                                        {
+                                                            if (status2 != null && status2.getState().isFinished()) {
+                                                                String resultados2 = status2.getOutputData().getString("resultados");
+                                                                if (!resultados2.equals("null")){
+                                                                    med.setConsumo(true);
+                                                                }
+                                                                else{
+                                                                    med.setConsumo(false);
+                                                                }
+                                                                consumos.add(med);
+                                                                pAdapter.notifyDataSetChanged();
+                                                                actualizarVacioLleno(consumos);
+                                                            }
+                                                        }});
                                         }
                                     }
-
-                                    pAdapter.notifyDataSetChanged();
-
                                 }
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                        actualizarVacioLleno(consumos);
                     }
                 });
         WorkManager.getInstance(requireContext()).enqueue(req);
