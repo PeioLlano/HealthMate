@@ -10,6 +10,7 @@ public class Medicina {
     private String nombre;
     private String hora;
     private ArrayList<String> dias;
+    private Boolean consumo;
 
     //Dejo abierto a meter mas cosas...
 
@@ -51,5 +52,13 @@ public class Medicina {
         }
 
         return stringBuilder.toString();
+    }
+
+    public Boolean getConsumo() {
+        return consumo;
+    }
+
+    public void setConsumo(Boolean consumo) {
+        this.consumo = consumo;
     }
 }

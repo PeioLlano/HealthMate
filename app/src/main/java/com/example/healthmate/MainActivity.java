@@ -26,6 +26,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.healthmate.Medicinas.MedicinasActivity;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -129,8 +130,9 @@ public class MainActivity extends AppCompatActivity
 
                     case R.id.medicines:
                         //makeText(MainActivity.this, "TO DO", LENGTH_SHORT).show();
-                        Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.medicinasFragment);
-
+                        //Navigation.findNavController(MainActivity.this, R.id.nav_host_fragment).navigate(R.id.medicinasFragment);
+                        Intent intent = new Intent(MainActivity.this, MedicinasActivity.class);
+                        startActivity(intent);
                         break;
                 }
 
@@ -140,8 +142,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        TextView tvUsername = navigationView.findViewById(R.id.tvUsername);
-        //tvUsername.setText(cargarLogeado());
+        View headerView = navigationView.getHeaderView(0); // Obtiene la vista del encabezado del NavigationView
+        TextView tvUsername = headerView.findViewById(R.id.tvUsername);
+        tvUsername.setText(cargarLogeado());
     }
 
 
