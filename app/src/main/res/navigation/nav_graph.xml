@@ -49,7 +49,8 @@
     <fragment
         android:id="@+id/registroFragment"
         android:name="com.example.healthmate.Registro.RegistroFragment"
-        android:label="RegistroFragment" >
+        android:label="RegistroFragment"
+        tools:layout="@layout/fragment_registro">
         <action
             android:id="@+id/action_registroFragment_to_pantallaPrincipalFragment"
             app:destination="@id/pantallaPrincipalFragment" />

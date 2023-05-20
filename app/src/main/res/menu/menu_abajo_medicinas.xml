@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/consumptionFragment"
-        android:title="Consumption"
+        android:title="@string/consumption_menu"
         android:icon="@drawable/calendar" />
 
     <item
         android:id="@+id/medicinesFragment"
-        android:title="Medicines"
+        android:title="@string/medicines_menu"
         android:icon="@drawable/pills" />
 
 </menu>

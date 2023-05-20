@@ -6,7 +6,7 @@
 
         <item
             android:id="@+id/medicines"
-            android:title="Medicines"
+            android:title="@string/medicines_menu"
             android:icon="@drawable/pills" />
 
     </group>
@@ -15,17 +15,22 @@
 
     <item
         android:id="@+id/shareFragment"
-        android:title="Share"
+        android:title="@string/share_menu"
         android:icon="@drawable/share" />
 
     <item
         android:id="@+id/about"
-        android:title="About"
+        android:title="@string/about_menu"
         android:icon="@drawable/about" />
 
     <item
+        android:id="@+id/change_language"
+        android:title="@string/change_language"
+        android:icon="@drawable/change_language" />
+
+    <item
         android:id="@+id/logoutFragment"
-        android:title="Log Out"
+        android:title="@string/log_out_menu"
         android:icon="@drawable/logout" />
 
     </group>

@@ -58,14 +58,10 @@ public class AddEjercicioDialog extends AppCompatDialogFragment {
 
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!etTitulo.getText().toString().equals("")) {
-                            /*
-                             * El código en base a qué lo pongo ?? Entiendo que habrá que poner
-                             * (el código más grande en la BBDD) + 1 --> DE MOMENTO HE PUESTO '-1'
-                             */
                             Bundle nuevoEjercicio = new Bundle();
                             nuevoEjercicio.putInt("codigo", -1);
                             nuevoEjercicio.putString("titulo", etTitulo.getText().toString());

@@ -23,8 +23,8 @@ public class NoEjercicioReceiver extends BroadcastReceiver {
         // Ejemplo básico de creación de la notificación
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "channel_id")
                 .setSmallIcon(R.drawable.noti)
-                .setContentTitle("¡Hora de registrar actividad!")
-                .setContentText("No has registrado ninguna actividad hoy. ¡Registra tu actividad ahora!")
+                .setContentTitle(context.getString(R.string.register_activity_time_title))
+                .setContentText(context.getString(R.string.register_activity_time_text))
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 

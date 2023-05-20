@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Nombre"/>
+            android:text="@string/name"/>
 
         <EditText
             android:id="@+id/etNombre"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
-            android:text="Hora"/>
+            android:text="@string/time"/>
 
         <TimePicker
             android:id="@+id/dpHora"
@@ -59,21 +59,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Lunes" />
+                android:text="@string/monday" />
 
             <CheckBox
                 android:id="@+id/cbMartes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Martes" />
+                android:text="@string/tuesday" />
 
             <CheckBox
                 android:id="@+id/cbMiercoles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Miercoles" />
+                android:text="@string/wednesday" />
 
         </LinearLayout>
 
@@ -87,21 +87,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Jueves" />
+                android:text="@string/thursday" />
 
             <CheckBox
                 android:id="@+id/cbViernes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Viernes" />
+                android:text="@string/friday" />
 
             <CheckBox
                 android:id="@+id/cbSabado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Sabado" />
+                android:text="@string/saturday" />
 
         </LinearLayout>
 
@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Domingo"
+                android:text="@string/sunday"
                 android:layout_weight="0"/>
 
             <TextView

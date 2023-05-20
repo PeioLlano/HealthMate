@@ -60,7 +60,7 @@ public class AddMedicinaDialog extends AppCompatDialogFragment {
 
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!etNombre.getText().toString().equals("")) {

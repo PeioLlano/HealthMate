@@ -1,6 +1,5 @@
 package com.example.healthmate;
 
-import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
 import android.content.Context;
@@ -8,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +20,15 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
+import com.example.healthmate.Ejercicio.AddEjercicioDialog;
 import com.example.healthmate.Medicinas.MedicinasActivity;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
@@ -134,6 +137,10 @@ public class MainActivity extends AppCompatActivity
                         Intent intent = new Intent(MainActivity.this, MedicinasActivity.class);
                         startActivity(intent);
                         break;
+
+                    case R.id.change_language:
+                        CambiarIdiomaDialog cambiarIdiomaDialog = new CambiarIdiomaDialog();
+                        cambiarIdiomaDialog.show(getSupportFragmentManager(), "DialogoCambiarIdioma");
                 }
 
                 drawerLayout.closeDrawer(Gravity.LEFT);

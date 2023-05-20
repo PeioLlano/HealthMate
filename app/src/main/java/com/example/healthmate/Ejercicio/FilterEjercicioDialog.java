@@ -88,14 +88,14 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
         });
 
         builder.setView(view)
-                .setTitle("Filter exercises")
+                .setTitle(R.string.filter_exercises)
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Bundle filtro = new Bundle();

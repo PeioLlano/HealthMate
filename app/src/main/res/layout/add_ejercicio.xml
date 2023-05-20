@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Tipo"/>
+            android:text="@string/type"/>
 
         <Spinner
             android:id="@+id/sTipo"
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
-            android:text="Titulo"/>
+            android:text="@string/title"/>
 
         <EditText
             android:id="@+id/etTitulo"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
-            android:text="Distancia (kms)"/>
+            android:text="@string/distance_km"/>
 
         <EditText
             android:id="@+id/etDistancia"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingStart="8dp"
-            android:text="Fecha (default today and now)"/>
+            android:text="@string/date"/>
 
         <EditText
             android:id="@+id/etDate"

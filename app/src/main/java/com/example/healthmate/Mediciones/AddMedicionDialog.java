@@ -1,10 +1,8 @@
 package com.example.healthmate.Mediciones;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -68,7 +66,7 @@ public class AddMedicionDialog extends AppCompatDialogFragment {
 
                     }
                 })
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (!etTitulo.getText().toString().equals("") && !etMedicion.getText().toString().equals("")) {

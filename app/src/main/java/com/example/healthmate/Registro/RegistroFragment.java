@@ -1,7 +1,6 @@
 package com.example.healthmate.Registro;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,10 +24,8 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.healthmate.Login.LoginFragmentDirections;
 import com.example.healthmate.R;
 import com.example.healthmate.Workers.InsertWorker;
-import com.example.healthmate.Workers.SelectWorker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -42,15 +38,6 @@ import java.util.regex.Pattern;
 
 
 public class RegistroFragment extends Fragment {
-
-    /* Atributos de la interfaz gráfica */
-    private EditText eUsername;
-    private EditText ePassword;
-    private Button bSignIn;
-    private TextView tNoCuenta;
-    private Button bSignUp;
-
-    /* Otros atributos */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +71,7 @@ public class RegistroFragment extends Fragment {
         bSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (todo_relleno(eUsername.getText().toString(),ePassword.getText().toString(),ePasswordRepeat.getText().toString(),eMail.getText().toString())) {
+                if (todoRelleno(eUsername.getText().toString(),ePassword.getText().toString(),ePasswordRepeat.getText().toString(),eMail.getText().toString())) {
                     if (isValidEmailAddress(eMail.getText().toString())){
                         if (mismaPass(ePassword.getText().toString(), ePasswordRepeat.getText().toString())){
                             try{
@@ -242,7 +229,7 @@ public class RegistroFragment extends Fragment {
     }
 
     //Comprobar si todos los campos estan rellenos
-    private boolean todo_relleno(String username, String pass1, String pass2, String mail) {
+    private boolean todoRelleno(String username, String pass1, String pass2, String mail) {
         return ((!username.equals("")) && (!pass1.equals("")) && (!pass2.equals("")) && (!mail.equals("")));
     }
 

@@ -291,7 +291,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                             Log.d("MapaFragment", "success error");
                             Toast.makeText(
                                 requireContext(),
-                                "No se ha podido obtener la ubicacion actual",
+                                R.string.cant_obtain_location,
                                 Toast.LENGTH_SHORT
                             ).show();
                         }
@@ -302,7 +302,7 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
                         Log.d("MapaFragment", "failure error");
                         Toast.makeText(
                             requireContext(),
-                            "No se ha podido obtener la ubicacion actual",
+                            R.string.cant_obtain_location,
                             Toast.LENGTH_SHORT
                         ).show();
                     }

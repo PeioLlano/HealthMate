@@ -4,26 +4,26 @@
 
     <item
         android:id="@+id/mapaFragment"
-        android:title="Map"
+        android:title="@string/map_menu"
         android:icon="@drawable/map" />
 
     <item
         android:id="@+id/ejercicioFragment"
-        android:title="Sport"
+        android:title="@string/sport_menu"
         android:icon="@drawable/sport" />
 
     <item
         android:id="@+id/pantallaPrincipalFragment"
-        android:title="Home"
+        android:title="@string/home_menu"
         android:icon="@drawable/home" />
 
     <item
         android:id="@+id/medicionesFragment"
-        android:title="Measurements"
+        android:title="@string/measurements_menu"
         android:icon="@drawable/measurements" />
     <item
         android:id="@+id/chatFragment"
-        android:title="Chat"
+        android:title="@string/chat_menu"
         android:icon="@drawable/chat" />
 
 </menu>

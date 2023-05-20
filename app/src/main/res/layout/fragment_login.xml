@@ -52,10 +52,11 @@
 
         <Button
             android:id="@+id/bSignIn"
-            android:layout_width="147dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/login" />
+            android:text="@string/login"
+            tools:text="Iniciar sesión"/>
 
         <TextView
             android:id="@+id/tNoCuenta"

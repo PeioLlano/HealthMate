@@ -15,10 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.NetworkType;
@@ -72,6 +75,8 @@ public class LoginFragment extends Fragment {
 
         ((MainActivity) getActivity()).disableOptions();
 
+        cargarIdiomaDePreferencias();
+
         eUsername = view.findViewById(R.id.eUsername);
         ePassword = view.findViewById(R.id.ePassword);
         tNoCuenta = view.findViewById(R.id.tNoCuenta);
@@ -88,11 +93,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navegarHaciarRegistro();
-                /*Toast.makeText(
-                    requireContext(),
-                    "REGISTRARSE",
-                    Toast.LENGTH_SHORT
-                ).show();*/
             }
         });
     }
@@ -235,6 +235,21 @@ public class LoginFragment extends Fragment {
         NavDirections accion = LoginFragmentDirections
                 .actionLoginFragmentToRegistroFragment();
         NavHostFragment.findNavController(this).navigate(accion);
+    }
+
+    // Función para cargar el idioma de las preferencias (por defecto utilizamos el castellano
+    // como idioma de la aplicación)
+    private void cargarIdiomaDePreferencias() {
+        SharedPreferences preferencias = PreferenceManager
+            .getDefaultSharedPreferences(requireContext());
+        String idiomaActual = preferencias.getString("idioma", null);
+        if (idiomaActual == null) {
+            SharedPreferences.Editor editor = preferencias.edit();
+            editor.putString("idioma", "es");
+            editor.apply();
+        }
+        LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(idiomaActual);
+        AppCompatDelegate.setApplicationLocales(appLocale);
     }
 
 }

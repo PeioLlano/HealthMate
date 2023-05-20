@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">HealthMate</string>
-    <string name="login">Entrar</string>
+    <string name="login">Iniciar Sesión</string>
     <string name="username_ph">Usuario</string>
     <string name="password_ph">Contraseña</string>
     <string name="signup">Registrarse</string>
@@ -19,5 +18,40 @@
     <string name="diff_pass">Las contraseñas no coinciden.</string>
     <string name="invalid_mail">Introduzca un email valido.</string>
     <string name="fill_fields">" Rellene todos los campos. "</string>
+    <string name="enterMedicionData">Añada información de la medición</string>
+    <string name="error">Ha ocurrido un error</string>
     <string name="delete_medicine">¿Quiere eliminar la medicación?</string>
+    <string name="please_enter_message">Por favor, introduzca un mensaje...</string>
+    <string name="filter_exercises">Filtrar ejercicios</string>
+    <string name="cant_obtain_location">No se ha podido obtener la ubicación actual</string>
+    <string name="register_activity_time_title">¡Hora de registrar actividad!</string>
+    <string name="register_activity_time_text">No has registrado ninguna actividad hoy. ¡Registra tu actividad ahora!</string>
+    <string name="enterExerciseData">Enter exercise data</string>
+    <string name="change_language">Cambiar idioma</string>
+    <string name="map_menu">Mapa</string>
+    <string name="sport_menu">Ejercicio</string>
+    <string name="home_menu">Menu principal</string>
+    <string name="measurements_menu">Mediciones</string>
+    <string name="chat_menu">Chat</string>
+    <string name="consumption_menu">Consumiciones</string>
+    <string name="medicines_menu">Medicina</string>
+    <string name="share_menu">Compartir</string>
+    <string name="about_menu">Sobre la aplicación</string>
+    <string name="log_out_menu">Cerrar sesión</string>
+    <string name="type">Tipo</string>
+    <string name="title">Título</string>
+    <string name="distance_km">Distancia (kms)</string>
+    <string name="date">Date (default today and now)</string>
+    <string name="name">Nombre</string>
+    <string name="time">Hora</string>
+    <string name="monday">Lunes</string>
+    <string name="tuesday">Martes</string>
+    <string name="wednesday">Miércoles</string>
+    <string name="thursday">Jueves</string>
+    <string name="friday">Viernes</string>
+    <string name="saturday">Sábado</string>
+    <string name="sunday">Domingo</string>
+    <string name="measurement">Medición (incluya unidad de medida)</string>
+    <string name="date_without_default">Fecha</string>
+    <string name="derechos_reservados_healthmate">HealthMate © 2023 - Todos los derechos reservados.</string>
 </resources>

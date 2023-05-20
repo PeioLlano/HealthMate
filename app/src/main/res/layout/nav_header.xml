@@ -27,7 +27,7 @@
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="HealthMate © 2023 - Todos los derechos reservados.  "
+        android:text="@string/derechos_reservados_healthmate"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
         app:layout_constraintEnd_toEndOf="@+id/tvUsername"
         app:layout_constraintStart_toStartOf="@+id/tvUsername"

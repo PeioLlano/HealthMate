@@ -97,7 +97,7 @@ public class ChatFragment extends Fragment {
                     // Si el campo de texto está vacío, muestra un mensaje en la pantalla.
                     Toast.makeText(
                         requireContext(),
-                        "Please enter your message..",
+                        R.string.please_enter_message,
                         Toast.LENGTH_SHORT
                     ).show();
                     return;
