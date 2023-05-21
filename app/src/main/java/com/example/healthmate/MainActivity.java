@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity
 
         Data data = new Data.Builder()
                 .putString("location", "43.263681,-2.951053")
-                .putString("radius", "1000")
+                .putString("radius", "10000")
                 .putString("apikey", "AIzaSyBT59rhxR2sQe9O28i_riW04jXP3SlI-5Q")
                 .putString("types", "hospital")
                 .build();
