@@ -54,4 +54,41 @@
     <string name="measurement">Neurketa (neurri-unitatea jarri)</string>
     <string name="date_without_default">Data</string>
     <string name="derechos_reservados_healthmate">" HealthMate © 2023 - Eskubide guztiak erreserbatuta"</string>
+    <string name="app_info">
+        HealthMate froga ezazu, zure neurrira egindako osasun-kidea!\n\n
+
+        HealthMate zure ongizatea hobetzen eta bizimodu osasungarria eramaten laguntzeko
+        diseinatutako aplikazioa da. Aplikazioak dituen askotariko funtzio eta ezaugarrien bitartez
+        kirol-jardueren neurketak kudeatu, elikadura-ohiturak kontrolatu eta egindako
+        aurrepenaren jarraipena egiteko aukera eta askoz gauza gehiago eskaintzen ditu.\n\n
+
+        HealthMate aplikazioaren ezaugarri nagusiak:\n\n
+
+        - Zure kirol-jarduera erregistratu: Zure jarduera fisikoen erregistroa gorde, hala nola,
+        igeriketa sesioa, bizikletan egindako ibilbidea eta abar, zure ariketa-errutinaren
+        jarraipen eraginkorra egiteko.\n
+        - Grafikoa eta estatistikak: Bistaratu zure aurrerapena grafiko eta estatistiken bitartez.
+        Hauei esker, zure aurrerapenak ebaluatu eta helburu errealistak ezartzeko gai izango zara.\n
+
+        - Zuri egokitutako mezu eta alarma konfiguratu motibazioa manten dezazun eta hala kirol
+        jarduerez nola ohitura osasungarriez ahaztu ez zaitezen. \n\n
+
+        Deskargatu HealthMate gaur bertan eta has zaitez zure osasuna zaintzen modu erraz eta
+        eraginkorrean.\n\n
+
+        ¡Zure bizitza kalitatea hobetu HealthMate aplikazioari esker!
+    </string>
+    <string name="share_healthmate">HealthMate partekatu</string>
+    <string name="about_text">
+        ¡Ongi etorri gure aplikaziora!\n\n
+
+        HealthMate-en,
+        zure ongizaterako eta osasunerako esperientzia paregabea eta aberasgarria eskaintzen dizugu.
+        Gure egitekoa bizimodu osasungarria izaten laguntzea da, zure helburuak erraz eta modu
+        dibertigarrian lortzeko tresnak eta baliabideak eskainiz. \n\n
+
+        ¡Eskerrik asko gu hautatzeagatik!\n\n
+
+        HealthMate taldea
+    </string>
 </resources>

@@ -83,34 +83,20 @@ public class MainActivity extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.shareFragment:
-                        String appInfo = "¡Descubre HealthMate, tu compañero de salud personalizado!\n\n" +
-                                "HealthMate es una aplicación diseñada para ayudarte a mejorar tu bienestar y llevar un estilo de vida saludable. Con una variedad de características y funciones, te ofrece las herramientas necesarias para gestionar tus mediciones de ejercicio, controlar tus hábitos alimenticios, hacer un seguimiento de tu progreso y mucho más.\n\n" +
-                                "Principales características de HealthMate:\n" +
-                                "- Registra tus ejercicios: Mantén un registro de tus actividades físicas, como correr, nadar, andar en bicicleta, etc., para un seguimiento efectivo de tu rutina de ejercicios.\n" +
-                                "- Gráficos y estadísticas: Visualiza tu progreso a través de gráficos y estadísticas detalladas, lo que te permitirá evaluar tus avances y establecer metas realistas.\n" +
-                                "- Recordatorios y alarmas: Configura recordatorios y alarmas personalizadas para mantenerte motivado y no olvidar tus actividades y hábitos saludables.\n\n" +
-                                "Descarga HealthMate hoy mismo y comienza a cuidar de tu salud y bienestar de manera fácil y efectiva.\n\n" +
-                                "¡Mejora tu vida con HealthMate!";
-
+                        String appInfo = getString(R.string.app_info);
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_TEXT, appInfo);
                         sendIntent.setType("text/plain");
 
-                        Intent shareIntent = Intent.createChooser(sendIntent, "Compartir HealthMate");
+                        Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.share_healthmate));
                         startActivity(shareIntent);
                         break;
 
                     case R.id.about:
                         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
                         alertDialog.setTitle("HealthMate");
-                        alertDialog.setMessage("\"¡Bienvenido a nuestra aplicación!\n" +
-                                "\n" +
-                                "En HealthMate, nos dedicamos a proporcionarte una experiencia única y enriquecedora para tu bienestar y salud. Nuestra misión es ayudarte a llevar un estilo de vida saludable, brindándote herramientas y recursos que te permitan alcanzar tus metas de forma fácil y divertida.\n" +
-                                "\n" +
-                                "¡Gracias por elegirnos!\n" +
-                                "\n" +
-                                "El equipo de HealthMate\"");
+                        alertDialog.setMessage(getString(R.string.about_text));
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
