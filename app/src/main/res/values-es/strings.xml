@@ -57,4 +57,39 @@
     <string name="call_nearest_dr">Llamar Dr. cercano</string>
     <string name="error_2">Ha ocurrido un problema.</string>
     <string name="loading">Cargando. Por favor, espere...</string>
+    <string name="app_info">
+        ¡Descubre HealthMate, tu compañero de salud personalizado!\n\n
+
+        HealthMate es una aplicación diseñada para ayudarte a mejorar tu bienestar y llevar un
+        estilo de vida saludable. Con una variedad de características y funciones, te ofrece las
+        herramientas necesarias para gestionar tus mediciones de ejercicio, controlar tus hábitos
+        alimenticios, hacer un seguimiento de tu progreso y mucho más.\n\n
+
+        Principales características de HealthMate:\n\n
+
+        - Registra tus ejercicios: Mantén un registro de tus actividades físicas, como correr,
+        nadar, andar en bicicleta, etc., para un seguimiento efectivo de tu rutina de ejercicios.\n
+        - Gráficos y estadísticas: Visualiza tu progreso a través de gráficos y estadísticas
+        detalladas, lo que te permitirá evaluar tus avances y establecer metas realistas.\n
+        - Recordatorios y alarmas: Configura recordatorios y alarmas personalizadas para mantenerte
+        motivado y no olvidar tus actividades y hábitos saludables.\n\n
+
+        Descarga HealthMate hoy mismo y comienza a cuidar de tu salud y bienestar de manera fácil
+        y efectiva.\n\n
+
+        ¡Mejora tu vida con HealthMate!
+    </string>
+    <string name="share_healthmate">Compartir HealthMate</string>
+    <string name="about_text">
+        ¡Bienvenido a nuestra aplicación!\n\n
+
+        En HealthMate, nos dedicamos a proporcionarte una experiencia única y enriquecedora para tu
+        bienestar y salud. Nuestra misión es ayudarte a llevar un estilo de vida saludable,
+        brindándote herramientas y recursos que te permitan alcanzar tus metas de forma fácil y
+        divertida. \n\n
+
+        ¡Gracias por elegirnos!\n\n
+
+        El equipo de HealthMate
+    </string>
 </resources>

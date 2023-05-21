@@ -78,6 +78,8 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        pedirPermisosUbicacion();
+
         // Obtenemos el fragmento del mapa mediante su ID y lo asignamos a una variable
         SupportMapFragment fragmentoMapa = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.fcvMapa);

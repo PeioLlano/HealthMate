@@ -42,11 +42,27 @@ public class Ejercicio {
 
     public String getDiaString() {
         Calendar c = Calendar.getInstance();
-        c.setTime(fecha);
+        c.setTime(this.fecha);
         String fecha = String.valueOf(c.get(Calendar.DATE))
                 + '/' + String.valueOf(c.get(Calendar.MONTH))
                 + '/' + String.valueOf(c.get(Calendar.YEAR));
         return fecha;
+    }
+
+    public boolean isDistanciaInRange(double[] range) {
+        double min = range[0];
+        double max = range[1];
+        if (this.distancia >= min && this.distancia <= max) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isDistanciaMayor(double pDis) {
+        if (this.distancia > pDis) {
+            return true;
+        }
+        return false;
     }
 
     public Double getDistancia() {

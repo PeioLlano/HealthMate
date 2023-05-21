@@ -93,4 +93,62 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvDistancia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Distancia (km)"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cbDistancia"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rsDistancia"/>
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/rsDistancia"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:valueFrom="0.0"
+            android:valueTo="50.0"
+            android:stepSize="5.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cbDistancia"
+            app:layout_constraintTop_toBottomOf="@id/tvDistancia"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:labelBehavior="visible"
+            app:values="@array/initial_rsDistancia_values"/>
+        <!--
+        <Spinner
+            android:id="@+id/sTipo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/st_edittext"
+            android:minHeight="32dp"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cbTipo"
+            app:layout_constraintTop_toBottomOf="@id/tvTipo"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        -->
+
+        <CheckBox
+            android:id="@+id/cbDistancia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </LinearLayout>

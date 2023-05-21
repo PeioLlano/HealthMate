@@ -130,8 +130,21 @@ public class EjercicioFragment extends Fragment {
                                     .collect(Collectors.toCollection(ArrayList::new));
                         }
 
-                        Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
+                        // FILTRAR POR DISTANCIA
+                        double[] rangoDistancia = bundle.getDoubleArray("Distancia");
+                        Log.d("EjercicioFragment", "Distancia = " + rangoDistancia);
+                        if (rangoDistancia != null && rangoDistancia.length > 1) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(ejercicio -> ejercicio.isDistanciaInRange(rangoDistancia))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+                        if (rangoDistancia != null && rangoDistancia.length == 1) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(ejercicio -> ejercicio.isDistanciaMayor(rangoDistancia[0]))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
 
+                        Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
                         EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), listaFiltrada);
                         lvEjercicio.setAdapter(pAdapterFiltro);
                     }
