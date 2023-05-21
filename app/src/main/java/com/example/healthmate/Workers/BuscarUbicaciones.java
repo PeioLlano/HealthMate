@@ -45,6 +45,7 @@ public class BuscarUbicaciones extends Worker {
 
         try {
             String urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+location+"&radius="+radius+"&types="+types+"&key="+apikey;
+            Log.d("req", urlStr);
             HttpURLConnection urlConnection = null;
             URL url = new URL(urlStr);
             urlConnection = (HttpURLConnection) url.openConnection();

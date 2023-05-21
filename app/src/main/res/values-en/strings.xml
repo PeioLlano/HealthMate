@@ -54,4 +54,7 @@
     <string name="measurement">Measurement (include unit of measurement)</string>
     <string name="date_without_default">Date</string>
     <string name="derechos_reservados_healthmate">HealthMate © 2023 - All rights reserved</string>
+    <string name="call_nearest_dr">Call nearest Dr.</string>
+    <string name="error_2">A problem has occurred.</string>
+    <string name="loading">Loading. Please wait...</string>
 </resources>

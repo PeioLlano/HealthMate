@@ -1,11 +1,15 @@
 package com.example.healthmate;
 
 import static android.widget.Toast.makeText;
-
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,28 +18,51 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.os.LocaleListCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.PreferenceManager;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
-import com.example.healthmate.Ejercicio.AddEjercicioDialog;
 import com.example.healthmate.Medicinas.MedicinasActivity;
 import com.example.healthmate.Mediciones.AddMedicionDialog;
 import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
+import com.example.healthmate.Workers.BuscarHospitalCercano;
+import com.example.healthmate.Workers.BuscarUbicaciones;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
     implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment,
@@ -49,6 +76,9 @@ public class MainActivity extends AppCompatActivity
     /* Otros atributos */
     private NavController navController;
     private Button botonDesplegable;
+    private Intent intentCall;
+    private Integer requestCodeCall = 112;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +171,13 @@ public class MainActivity extends AppCompatActivity
                     case R.id.change_language:
                         CambiarIdiomaDialog cambiarIdiomaDialog = new CambiarIdiomaDialog();
                         cambiarIdiomaDialog.show(getSupportFragmentManager(), "DialogoCambiarIdioma");
+                        break;
+
+                    case R.id.call:
+                         dialog = ProgressDialog.show(MainActivity.this, "",getResources().getString(R.string.loading), true);
+                        getDoctorMasCercano();
+                        break;
+
                 }
 
                 drawerLayout.closeDrawer(Gravity.LEFT);
@@ -203,4 +240,69 @@ public class MainActivity extends AppCompatActivity
 
         return loged_user;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == requestCodeCall) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido, realiza la llamada
+                startActivity(intentCall);
+            } else {
+                // Permiso denegado, muestra un mensaje o realiza alguna acción alternativa
+            }
+        }
+    }
+
+    public void getDoctorMasCercano(){
+
+        Data data = new Data.Builder()
+                .putString("location", "43.263681,-2.951053")
+                .putString("radius", "1000")
+                .putString("apikey", "AIzaSyBT59rhxR2sQe9O28i_riW04jXP3SlI-5Q")
+                .putString("types", "hospital")
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(BuscarHospitalCercano.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.enqueue(req);
+
+        workManager.getWorkInfoByIdLiveData(req.getId())
+                .observe((LifecycleOwner) this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        Boolean resultados = status.getOutputData().getBoolean("resultado", false);
+
+                        if (resultados) {
+                            Log.d("telefono en main",status.getOutputData().getString("telefono"));
+
+                            intentCall = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + status.getOutputData().getString("telefono")));
+
+                            if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                                // La aplicación tiene permisos para realizar llamadas telefónicas
+                                startActivity(intentCall);
+                            } else {
+                                // La aplicación no tiene permisos, solicita al usuario que los conceda
+                                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CALL_PHONE}, requestCodeCall);
+                            }
+
+                            dialog.dismiss();
+
+                        }
+                        else{
+                            dialog.dismiss();
+                            Toast.makeText(this, getResources().getString(R.string.error_2), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }
+
 }

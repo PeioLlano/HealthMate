@@ -54,4 +54,7 @@
     <string name="measurement">Neurketa (neurri-unitatea jarri)</string>
     <string name="date_without_default">Data</string>
     <string name="derechos_reservados_healthmate">" HealthMate © 2023 - Eskubide guztiak erreserbatuta"</string>
+    <string name="call_nearest_dr">Gertuko Dr. deitu</string>
+    <string name="error_2">Arazo bat egon da.</string>
+    <string name="loading">Kargatzen. Mesedez, itxaron...</string>
 </resources>
