@@ -5,6 +5,11 @@
     <group android:id="@+id/grupo1">
 
         <item
+            android:id="@+id/call"
+            android:title="@string/call_nearest_dr"
+            android:icon="@drawable/call" />
+
+        <item
             android:id="@+id/medicines"
             android:title="@string/medicines_menu"
             android:icon="@drawable/pills" />
@@ -26,7 +31,7 @@
     <item
         android:id="@+id/change_language"
         android:title="@string/change_language"
-        android:icon="@drawable/change_language" />
+        android:icon="@drawable/language" />
 
     <item
         android:id="@+id/logoutFragment"
