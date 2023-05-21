@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.healthmate.R;
+import com.google.android.material.slider.RangeSlider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,7 +72,7 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
         dpFecha.setEnabled(false);
         dpFecha.setVisibility(View.INVISIBLE);
 
-        // Inicializar checkbox para activar/desactivar filtro de tipo de ejercicio
+        // Inicializar checkbox para activar/desactivar filtro de fecha de ejercicio
         CheckBox cbFecha = view.findViewById(R.id.cbFecha);
         cbFecha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +83,27 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                     dpFecha.setVisibility(View.VISIBLE);
                 } else {
                     dpFecha.setVisibility(View.INVISIBLE);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Preparar filtro distancia
+        RangeSlider rsDistancia = view.findViewById(R.id.rsDistancia);
+        rsDistancia.setEnabled(false);
+        rsDistancia.setVisibility(View.INVISIBLE);
+
+        // Inicializar checkbox para activar/desactivar filtro de distancia de ejercicio
+        CheckBox cbDistancia = view.findViewById(R.id.cbDistancia);
+        cbDistancia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("FiltrarEjercicioDialog", "Clicado distancia = " + cbDistancia.isChecked());
+                if (cbDistancia.isChecked()) {
+                    rsDistancia.setEnabled(true);
+                    rsDistancia.setVisibility(View.VISIBLE);
+                } else {
+                    rsDistancia.setVisibility(View.INVISIBLE);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -99,12 +121,14 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Bundle filtro = new Bundle();
+                        // Envíar info del filtro tipo
                         if (cbTipo.isChecked()) {
                             filtro.putString("Tipo", sTipo.getSelectedItem().toString());
                         } else {
                             filtro.putString("Tipo", null);
                         }
 
+                        // Envíar info del filtro fecha
                         if (cbFecha.isChecked()) {
                             int dia = dpFecha.getDayOfMonth();
                             int mes = dpFecha.getMonth();
@@ -116,6 +140,18 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                             filtro.putString("Fecha", fecha);
                         } else {
                             filtro.putString("Fecha", null);
+                        }
+
+                        // Envíar info del filtro distancia
+                        if (cbDistancia.isChecked()) {
+                            double[] rangoDistancia = rsDistancia.getValues().stream().mapToDouble(f -> f != null ? f : Float.NaN).toArray();
+                            if (rangoDistancia[0] == rangoDistancia[1]) {
+                                filtro.putDoubleArray("Distancia", new double[]{rangoDistancia[0]});
+                            } else {
+                                filtro.putDoubleArray("Distancia", rangoDistancia);
+                            }
+                        } else {
+                            filtro.putDoubleArray("Distancia", null);
                         }
 
                         getParentFragmentManager()
