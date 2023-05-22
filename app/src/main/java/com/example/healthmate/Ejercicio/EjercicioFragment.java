@@ -144,6 +144,15 @@ public class EjercicioFragment extends Fragment {
                                     .collect(Collectors.toCollection(ArrayList::new));
                         }
 
+                        // FILTRAR POR NOMBRE
+                        String nombre = bundle.getString("Nombre");
+                        Log.d("EjercicioFragment", "Nombre = " + nombre);
+                        if (nombre != null) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(ejercicio -> ejercicio.isInTitulo(nombre))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+
                         Log.d("EjericioFragment", "ejercicios = " + ejercicios.size());
                         EjercicioAdapter pAdapterFiltro = new EjercicioAdapter(requireContext(), listaFiltrada);
                         lvEjercicio.setAdapter(pAdapterFiltro);
@@ -201,6 +210,18 @@ public class EjercicioFragment extends Fragment {
                 crearPDF();
             }
 
+        });
+
+        // Obtenermos la referencia al botón flotante de borrar filtros
+        FloatingActionButton fabRmFiltros = view.findViewById(R.id.fabRmFiltros);
+
+        // Configuramos el listener para el botón de borrar filtros
+        fabRmFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EjercicioAdapter pAdapter = new EjercicioAdapter(requireContext(), ejercicios);
+                lvEjercicio.setAdapter(pAdapter);
+            }
         });
 
         // Obtenemos la referencia a la vista de lista de ejercicios

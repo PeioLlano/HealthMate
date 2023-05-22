@@ -65,6 +65,13 @@ public class Ejercicio {
         return false;
     }
 
+    public boolean isInTitulo(String nombre) {
+        if (this.titulo.contains(nombre)) {
+            return true;
+        }
+        return false;
+    }
+
     public Double getDistancia() {
         return distancia;
     }

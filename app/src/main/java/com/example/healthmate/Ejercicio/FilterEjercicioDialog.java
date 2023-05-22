@@ -109,6 +109,28 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
             }
         });
 
+        // Preparar filtro nombre
+        EditText etNombre = view.findViewById(R.id.etNombre);
+        etNombre.setEnabled(false);
+        etNombre.setVisibility(View.INVISIBLE);
+
+        // Inicializar checkbox para activar/desactivar filtro de nombre de ejercicio
+        CheckBox cbNombre = view.findViewById(R.id.cbNombre);
+        cbNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("FiltrarEjercicioDialog", "Clicado nombre = " + cbNombre.isChecked());
+                if (cbNombre.isChecked()) {
+                    etNombre.setEnabled(true);
+                    etNombre.setVisibility(View.VISIBLE);
+                } else {
+                    etNombre.setVisibility(View.INVISIBLE);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
         builder.setView(view)
                 .setTitle(R.string.filter_exercises)
                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -121,14 +143,14 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Bundle filtro = new Bundle();
-                        // Envíar info del filtro tipo
+                        // Enviar info del filtro tipo
                         if (cbTipo.isChecked()) {
                             filtro.putString("Tipo", sTipo.getSelectedItem().toString());
                         } else {
                             filtro.putString("Tipo", null);
                         }
 
-                        // Envíar info del filtro fecha
+                        // Enviar info del filtro fecha
                         if (cbFecha.isChecked()) {
                             int dia = dpFecha.getDayOfMonth();
                             int mes = dpFecha.getMonth();
@@ -142,7 +164,7 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                             filtro.putString("Fecha", null);
                         }
 
-                        // Envíar info del filtro distancia
+                        // Enviar info del filtro distancia
                         if (cbDistancia.isChecked()) {
                             double[] rangoDistancia = rsDistancia.getValues().stream().mapToDouble(f -> f != null ? f : Float.NaN).toArray();
                             if (rangoDistancia[0] == rangoDistancia[1]) {
@@ -152,6 +174,14 @@ public class FilterEjercicioDialog extends AppCompatDialogFragment {
                             }
                         } else {
                             filtro.putDoubleArray("Distancia", null);
+                        }
+
+                        // Enviar info del filtro nombre
+                        if (cbNombre.isChecked()) {
+                            String nombre = etNombre.getText().toString();
+                            filtro.putString("Nombre", nombre);
+                        } else {
+                            filtro.putString("Nombre", null);
                         }
 
                         getParentFragmentManager()
