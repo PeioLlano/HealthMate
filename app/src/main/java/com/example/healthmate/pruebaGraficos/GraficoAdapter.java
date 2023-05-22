@@ -1,22 +1,12 @@
-package com.example.healthmate.PantallaPrincipal;
+package com.example.healthmate.pruebaGraficos;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.Manifest;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -33,92 +23,117 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
-import com.example.healthmate.MainActivity;
-import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioNotificationHelper;
-import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioReceiver;
+import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.example.healthmate.R;
-import com.example.healthmate.pruebaGraficos.GraficoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PantallaPrincipalFragment extends Fragment {
-
-    /* Atributos de la interfaz gráfica */
-    private RecyclerView rvGraficos;
+public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
 
 
-    /* Otros atributos */
-    private ListenerPantallaPrincipalFragment listenerPantallaPrincipalFragment;
+    // habría que pasarle los datos (números; p. ej. --> PASOS)
+    public GraficoAdapter() {
 
+    }
 
-    /*
-     * Interfaz para que 'MainActivity' haga visible el 'BottomNavigationView' (tan sólo esta
-     * actividad puede acceder a este elemento)
-     */
-    public interface ListenerPantallaPrincipalFragment {
-        void mostrarBarraDeNavegacion();
-        void ocultarBarraDeNavegacion();
+    @NonNull
+    @Override
+    public GraficoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View graficoItem = LayoutInflater
+            .from(parent.getContext())
+            .inflate(R.layout.item_grafico_base, parent, false);
+        GraficoViewHolder graficoViewHolder = new GraficoViewHolder(graficoItem);
+        return graficoViewHolder;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(
-        @NonNull LayoutInflater inflater,
-        @Nullable ViewGroup container,
-        @Nullable Bundle savedInstanceState
-    ) {
-        return inflater.inflate(R.layout.fragment_pantalla_principal, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        listenerPantallaPrincipalFragment.mostrarBarraDeNavegacion();
-
-        ((MainActivity) getActivity()).enableOptions();
-
-        NoEjercicioNotificationHelper.scheduleNotification(requireContext());
-
-        // Pedimos los permisos para notificaciones si es que no los tenemos
-        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.POST_NOTIFICATIONS)!=
-                PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new
-                    String[]{Manifest.permission.POST_NOTIFICATIONS}, 11);
-        }
-
-        if (getArguments() != null) {
-            String usuario = getArguments().getString("usuario");
-            Log.d("PantallaPrincipalFragment", "USUARIO --> " + usuario);
-        }
-
-        crearGrafico(view);
-
-        rvGraficos = view.findViewById(R.id.rvGraficos);
-        rvGraficos.setAdapter(new GraficoAdapter());
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            listenerPantallaPrincipalFragment = (ListenerPantallaPrincipalFragment) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("La clase " + context
-                + " debe implementar ListenerPantallaPrincipalFragment");
+    public void onBindViewHolder(@NonNull GraficoViewHolder holder, int position) {
+        if (position == 0) {
+            crearGraficoBarras(holder.graficoBase);
+        } else if (position == 1) {
+            crearGraficoBarrasV2(holder.graficoBase);
+        } else if (position == 2) {
+            crearGraficoLineas(holder.graficoBase);
         }
     }
 
-    private void crearGrafico(View view) {
-        AnyChartView anyChartView = view.findViewById(R.id.grafico);
-        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
-        anyChartView.setProgressBar(progressBar);
+    // Gráfico para guardar los pasos de cada día del mes
+    private void crearGraficoBarras(AnyChartView grafico) {
+        Cartesian cartesian = AnyChart.column();
 
+        List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry(1, 1000));
+        data.add(new ValueDataEntry(2, 2000));
+        data.add(new ValueDataEntry(3, 3000));
+        data.add(new ValueDataEntry(4, 2000));
+        data.add(new ValueDataEntry(5, 1000));
+
+        Column column = cartesian.column(data);
+
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("{%Value}{groupsSeparator: } pasos");
+        column.color("#7FFF00");
+
+        cartesian.animation(true);
+        cartesian.title("Pasos en un mes");
+
+        cartesian.yScale().minimum(0d);
+
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Día del mes");
+        cartesian.yAxis(0).title("Pasos");
+
+        grafico.setChart(cartesian);
+    }
+
+    private void crearGraficoBarrasV2(AnyChartView grafico) {
+        Cartesian cartesian = AnyChart.column();
+
+        List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry(1, 1000));
+        data.add(new ValueDataEntry(2, 2000));
+        data.add(new ValueDataEntry(3, 3000));
+        data.add(new ValueDataEntry(4, 4000));
+        data.add(new ValueDataEntry(5, 5000));
+
+        Column column = cartesian.column(data);
+
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("{%Value}{groupsSeparator: } pasos");
+        column.color("#7FFF00");
+
+        cartesian.animation(true);
+        cartesian.title("Pasos en un mes");
+
+        cartesian.yScale().minimum(0d);
+
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Día del mes");
+        cartesian.yAxis(0).title("Pasos");
+
+        grafico.setChart(cartesian);
+    }
+
+    private void crearGraficoLineas(AnyChartView grafico) {
         Cartesian cartesian = AnyChart.line();
 
         cartesian.animation(true);
@@ -210,7 +225,7 @@ public class PantallaPrincipalFragment extends Fragment {
         cartesian.legend().fontSize(13d);
         cartesian.legend().padding(0d, 0d, 10d, 0d);
 
-        anyChartView.setChart(cartesian);
+        grafico.setChart(cartesian);
     }
 
     private class CustomDataEntry extends ValueDataEntry {
@@ -221,47 +236,8 @@ public class PantallaPrincipalFragment extends Fragment {
         }
     }
 
-    /*private void crearGraficoDeBarras(View view) {
-        AnyChartView graficoBarras = view.findViewById(R.id.grafico_barras);
-        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
-        graficoBarras.setProgressBar(progressBar);
-
-        Cartesian cartesian = AnyChart.column();
-
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Rouge", 80540));
-        data.add(new ValueDataEntry("Foundation", 94190));
-        data.add(new ValueDataEntry("Mascara", 102610));
-        data.add(new ValueDataEntry("Lip gloss", 110430));
-        data.add(new ValueDataEntry("Lipstick", 128000));
-        data.add(new ValueDataEntry("Nail polish", 143760));
-        data.add(new ValueDataEntry("Eyebrow pencil", 170670));
-        data.add(new ValueDataEntry("Eyeliner", 213210));
-        data.add(new ValueDataEntry("Eyeshadows", 249980));
-
-        Column column = cartesian.column(data);
-
-        column.tooltip()
-                .titleFormat("{%X}")
-                .position(Position.CENTER_BOTTOM)
-                .anchor(Anchor.CENTER_BOTTOM)
-                .offsetX(0d)
-                .offsetY(5d)
-                .format("${%Value}{groupsSeparator: }");
-
-        cartesian.animation(true);
-        cartesian.title("Top 10 Cosmetic Products by Revenue");
-
-        cartesian.yScale().minimum(0d);
-
-        cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
-
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-        cartesian.interactivity().hoverMode(HoverMode.BY_X);
-
-        cartesian.xAxis(0).title("Product");
-        cartesian.yAxis(0).title("Revenue");
-
-        graficoBarras.setChart(cartesian);
-    }*/
+    @Override
+    public int getItemCount() {
+        return 3;
+    }
 }
