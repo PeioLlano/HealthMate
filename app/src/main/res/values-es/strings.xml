@@ -93,4 +93,5 @@
         El equipo de HealthMate
     </string>
     <string name="nombre">Nombre</string>
+    <string name="filter_measurements">Filtrar mediciones</string>
 </resources>

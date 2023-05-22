@@ -1,5 +1,6 @@
 package com.example.healthmate.Modelo;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Medicion {
@@ -39,5 +40,21 @@ public class Medicion {
 
     public String getTipo() {
         return tipo;
+    }
+
+    public String getDiaString() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(this.fecha);
+        String fecha = String.valueOf(c.get(Calendar.DATE))
+                + '/' + String.valueOf(c.get(Calendar.MONTH))
+                + '/' + String.valueOf(c.get(Calendar.YEAR));
+        return fecha;
+    }
+
+    public boolean isInTitulo(String nombre) {
+        if (this.titulo.contains(nombre)) {
+            return true;
+        }
+        return false;
     }
 }

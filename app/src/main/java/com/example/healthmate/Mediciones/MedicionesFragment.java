@@ -33,6 +33,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.healthmate.Ejercicio.AddEjercicioDialog;
+import com.example.healthmate.Ejercicio.EjercicioAdapter;
+import com.example.healthmate.Ejercicio.FilterEjercicioDialog;
 import com.example.healthmate.MainActivity;
 import com.example.healthmate.Modelo.Ejercicio;
 import com.example.healthmate.Modelo.Medicion;
@@ -63,6 +65,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class MedicionesFragment extends Fragment {
 
@@ -96,6 +99,49 @@ public class MedicionesFragment extends Fragment {
                         añadirMedicion(medicionNuevo);
                     }
                 });
+
+        /*
+         * Listener para recoger los datos del nuevo evento enviado por el diálogo
+         * 'FilterMedicionDialog'.
+         */
+        getParentFragmentManager().setFragmentResultListener(
+                "filtro", this, new FragmentResultListener() {
+                    @Override
+                    public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                        // FILTRAR POR TIPO
+                        String tipo = bundle.getString("Tipo");
+                        Log.d("MedicionesFragment", "tipo = " + tipo);
+                        ArrayList<Medicion> listaFiltrada = mediciones;
+                        if (tipo != null) {
+                            listaFiltrada = mediciones.stream()
+                                    .filter(medicion -> medicion.getTipo().equals(tipo))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+
+                        // FILTRAR POR FECHA
+                        String fecha = bundle.getString("Fecha");
+                        Log.d("MedicionesFragment", "fecha = " + fecha);
+                        if (fecha != null) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(medicion -> medicion.getDiaString().equals(fecha))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+
+                        // FILTRAR POR NOMBRE
+                        String nombre = bundle.getString("Nombre");
+                        Log.d("MedicionesFragment", "Nombre = " + nombre);
+                        if (nombre != null) {
+                            listaFiltrada = listaFiltrada.stream()
+                                    .filter(medicion -> medicion.isInTitulo(nombre))
+                                    .collect(Collectors.toCollection(ArrayList::new));
+                        }
+
+                        Log.d("MedicionesFragment", "mediciones = " + mediciones.size());
+                        MedicionAdapter pAdapterFiltro = new MedicionAdapter(requireContext(),
+                            listaFiltrada);
+                        lvMediciones.setAdapter(pAdapterFiltro);
+                    }
+                });
     }
 
     @Nullable
@@ -119,14 +165,15 @@ public class MedicionesFragment extends Fragment {
         fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show();
+                FilterMedicionDialog dialog = new FilterMedicionDialog();
+                dialog.show(getParentFragmentManager(), "DialogoFiltrarMedicion");
             }
         });
 
         // Obtenemos la referencia al botón flotante de añadir
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
 
-        // Configuramos el listener para el botón de filtrar
+        // Configuramos el listener para el botón de añadir
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +193,18 @@ public class MedicionesFragment extends Fragment {
                 crearPDF();
             }
 
+        });
+
+        // Obtenermos la referencia al botón flotante de borrar filtros
+        FloatingActionButton fabRmFiltros = view.findViewById(R.id.fabRmFiltros);
+
+        // Configuramos el listener para el botón de borrar filtros
+        fabRmFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MedicionAdapter pAdapter = new MedicionAdapter(requireContext(), mediciones);
+                lvMediciones.setAdapter(pAdapter);
+            }
         });
 
         // Obtenemos la referencia a la vista de lista de mediciones

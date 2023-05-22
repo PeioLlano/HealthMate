@@ -13,9 +13,6 @@ public class Ejercicio {
     private Double distancia;
     private String tipo;
 
-    //Dejo abierto a meter mas cosas...
-
-
     public Ejercicio(Integer codigo, String titulo, Date fecha, Double distancia, String tipo) {
         this.codigo = codigo;
         this.titulo = titulo;

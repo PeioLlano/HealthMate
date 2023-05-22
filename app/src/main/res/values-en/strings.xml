@@ -92,4 +92,5 @@
         The HealthMate team
     </string>
     <string name="nombre">Name</string>
+    <string name="filter_measurements">Filter measurements</string>
 </resources>
