@@ -22,64 +22,6 @@
         android:layout_margin="20dp"
         android:orientation="vertical">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="200dp" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="100">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="35"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/tvNombreIndicador"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Peso"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/tvValorIndicador"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="72.4 kg"
-                        android:textSize="40sp"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/tvObjetivo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Objetivo del mes: 70 kg"
-                        android:textSize="18sp"/>
-
-                </LinearLayout>
-
-                <FrameLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="65">
-
-                    <com.anychart.AnyChartView
-                        android:id="@+id/grafico"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:background="@color/green_200"/>
-
-                </FrameLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvGraficos"
             android:layout_width="match_parent"
