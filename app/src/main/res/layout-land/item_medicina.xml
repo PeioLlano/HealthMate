@@ -14,50 +14,49 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/etTitulo"
+            android:id="@+id/etNombre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:maxWidth="180dp"
-            android:text="Titulo medicion"
+            android:text="Nombre medicina"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/ivMedicion"
+            app:layout_constraintStart_toEndOf="@+id/ivMedicina"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvFecha"
+            android:id="@+id/tvDias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:maxWidth="180dp"
             android:layout_marginBottom="8dp"
-            android:text="dd/mm/aaaa"
-            android:textSize="16sp"
+            android:text="Lunes, miercoles y viernes"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/etTitulo"
-            app:layout_constraintTop_toBottomOf="@+id/etTitulo" />
+            app:layout_constraintStart_toStartOf="@+id/etNombre"
+            app:layout_constraintTop_toBottomOf="@+id/etNombre" />
 
         <TextView
-            android:id="@+id/tvMedicionDestacada"
+            android:id="@+id/tvHora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:maxWidth="70dp"
-            android:text="12,35 kms"
-            android:textSize="18sp"
+            android:text="14:00"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.925"
-            app:layout_constraintStart_toEndOf="@+id/etTitulo"
-            app:layout_constraintTop_toTopOf="@+id/etTitulo"
+            app:layout_constraintStart_toEndOf="@+id/etNombre"
+            app:layout_constraintTop_toTopOf="@+id/etNombre"
             app:layout_constraintVertical_bias="0.529" />
 
         <ImageView
-            android:id="@+id/ivMedicion"
+            android:id="@+id/ivMedicina"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
@@ -65,7 +64,6 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

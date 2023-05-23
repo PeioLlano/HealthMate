@@ -16,13 +16,13 @@
         <TextView
             android:id="@+id/etTitulo"
             android:layout_width="wrap_content"
+            android:maxWidth="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:maxWidth="180dp"
-            android:text="Titulo medicion"
+            android:text="Titulo ejercicio"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/ivMedicion"
+            app:layout_constraintStart_toEndOf="@+id/ivDeporte"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -30,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:maxWidth="180dp"
             android:layout_marginBottom="8dp"
+            android:maxWidth="180dp"
             android:text="dd/mm/aaaa"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,16 +39,15 @@
             app:layout_constraintTop_toBottomOf="@+id/etTitulo" />
 
         <TextView
-            android:id="@+id/tvMedicionDestacada"
+            android:id="@+id/tvEstadisticaDestacada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:maxWidth="70dp"
             android:text="12,35 kms"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.925"
@@ -57,7 +56,7 @@
             app:layout_constraintVertical_bias="0.529" />
 
         <ImageView
-            android:id="@+id/ivMedicion"
+            android:id="@+id/ivDeporte"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"

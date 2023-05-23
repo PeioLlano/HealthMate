@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -273,7 +274,8 @@ public class EjercicioFragment extends Fragment {
 
                                     Date fechaImp;
                                     try {
-                                        fechaImp = new Date(obj.getString("Fecha"));
+                                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        fechaImp = df.parse(obj.getString("Fecha"));
                                     } catch (Exception e) {
                                         fechaImp = new Date();
                                     }

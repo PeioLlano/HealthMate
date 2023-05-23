@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbEuskara"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Euskara"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbCastellano"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Castellano"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/rbIngles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inglés"
+            android:textSize="16sp" />
+
+    </RadioGroup>
+</FrameLayout>
