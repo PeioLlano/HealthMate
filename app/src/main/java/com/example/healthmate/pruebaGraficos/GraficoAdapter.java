@@ -3,7 +3,6 @@ package com.example.healthmate.pruebaGraficos;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +22,6 @@ import com.anychart.enums.MarkerType;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
-import com.example.healthmate.PantallaPrincipal.PantallaPrincipalFragment;
 import com.example.healthmate.R;
 
 import java.util.ArrayList;
@@ -31,10 +29,11 @@ import java.util.List;
 
 public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
 
+    private List<DataEntry> listaPasos;
 
-    // habría que pasarle los datos (números; p. ej. --> PASOS)
-    public GraficoAdapter() {
 
+    public GraficoAdapter(List<DataEntry> listaPasos) {
+        this.listaPasos = listaPasos;
     }
 
     @NonNull
@@ -50,7 +49,7 @@ public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull GraficoViewHolder holder, int position) {
         if (position == 0) {
-            crearGraficoBarras(holder.graficoBase);
+            crearGraficoBarrasPasos(holder.graficoBase);
         } else if (position == 1) {
             crearGraficoBarrasV2(holder.graficoBase);
         } else if (position == 2) {
@@ -59,20 +58,21 @@ public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
     }
 
     // Gráfico para guardar los pasos de cada día del mes
-    private void crearGraficoBarras(AnyChartView grafico) {
+    private void crearGraficoBarrasPasos(AnyChartView grafico) {
         Cartesian cartesian = AnyChart.column();
 
-        List<DataEntry> data = new ArrayList<>();
+        /*List<DataEntry> data = new ArrayList<>();
         data.add(new ValueDataEntry(1, 1000));
         data.add(new ValueDataEntry(2, 2000));
         data.add(new ValueDataEntry(3, 3000));
         data.add(new ValueDataEntry(4, 2000));
-        data.add(new ValueDataEntry(5, 1000));
+        data.add(new ValueDataEntry(5, 1000));*/
 
-        Column column = cartesian.column(data);
+
+        Column column = cartesian.column(listaPasos);
 
         column.tooltip()
-                .titleFormat("{%X}")
+                .titleFormat("Día {%X}")
                 .position(Position.CENTER_BOTTOM)
                 .anchor(Anchor.CENTER_BOTTOM)
                 .offsetX(0d)

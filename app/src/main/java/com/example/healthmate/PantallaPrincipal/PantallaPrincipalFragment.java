@@ -1,9 +1,14 @@
 package com.example.healthmate.PantallaPrincipal;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.Manifest;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,33 +16,33 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
-import com.anychart.core.cartesian.series.Column;
 import com.anychart.core.cartesian.series.Line;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
 import com.anychart.enums.Anchor;
-import com.anychart.enums.HoverMode;
 import com.anychart.enums.MarkerType;
-import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
 import com.example.healthmate.MainActivity;
 import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioNotificationHelper;
-import com.example.healthmate.NotificacionNoEjercicio.NoEjercicioReceiver;
 import com.example.healthmate.R;
+import com.example.healthmate.Workers.SelectWorker;
 import com.example.healthmate.pruebaGraficos.GraficoAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +55,11 @@ public class PantallaPrincipalFragment extends Fragment {
 
     /* Otros atributos */
     private ListenerPantallaPrincipalFragment listenerPantallaPrincipalFragment;
+
+    // Pedimos los registros de pasos que tenga el usuario en el último mes
+    private final JSONArray[] jsonArray = {new JSONArray()};
+
+    private List<DataEntry> listaPasos = new ArrayList<>();
 
 
     /*
@@ -97,10 +107,53 @@ public class PantallaPrincipalFragment extends Fragment {
             Log.d("PantallaPrincipalFragment", "USUARIO --> " + usuario);
         }
 
-        crearGrafico(view);
+        // crearGrafico(view);
 
+        // Obtenemos referencia de la lista de los gráficos
         rvGraficos = view.findViewById(R.id.rvGraficos);
-        rvGraficos.setAdapter(new GraficoAdapter());
+
+        // Worker para obtener los datos de los pasos del usuario logeado
+        Data data = new Data.Builder()
+                .putString("tabla", "Pasos")
+                .putString("condicion", "nombre_usuario='"+((MainActivity) getActivity()).cargarLogeado()+"'" +
+                        "AND MONTH(fecha)=5")
+                .build();
+
+        Constraints constr = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        OneTimeWorkRequest req = new OneTimeWorkRequest.Builder(SelectWorker.class)
+                .setConstraints(constr)
+                .setInputData(data)
+                .build();
+
+        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(req.getId())
+            .observe(requireActivity(), status -> {
+                if (status != null && status.getState().isFinished()) {
+                    String resultados = status.getOutputData().getString("resultados");
+                    if (resultados.equals("null") || resultados.equals("")) resultados = null;
+                    if (resultados != null) {
+                        listaPasos = new ArrayList<>();
+                        try {
+                            jsonArray[0] = new JSONArray(resultados);
+
+                            for (int i = 0; i < jsonArray[0].length(); i++) {
+                                JSONObject obj = jsonArray[0].getJSONObject(i);
+                                Integer cantidadPasos = obj.getInt("cantidad_pasos");
+                                ValueDataEntry pasosDiaActual = new ValueDataEntry(i + 1, cantidadPasos);
+                                listaPasos.add(pasosDiaActual);
+                            }
+
+                            rvGraficos.setAdapter(new GraficoAdapter(listaPasos));
+
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            });
+        WorkManager.getInstance(requireContext()).enqueue(req);
     }
 
     @Override
@@ -116,8 +169,8 @@ public class PantallaPrincipalFragment extends Fragment {
 
     private void crearGrafico(View view) {
         AnyChartView anyChartView = view.findViewById(R.id.grafico);
-        ProgressBar progressBar = view.findViewById(R.id.progress_bar);
-        anyChartView.setProgressBar(progressBar);
+        /*ProgressBar progressBar = view.findViewById(R.id.progress_bar);
+        anyChartView.setProgressBar(progressBar);*/
 
         Cartesian cartesian = AnyChart.line();
 
