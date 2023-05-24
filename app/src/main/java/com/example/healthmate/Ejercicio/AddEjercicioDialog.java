@@ -66,7 +66,7 @@ public class AddEjercicioDialog extends AppCompatDialogFragment {
                             nuevoEjercicio.putInt("codigo", -1);
                             nuevoEjercicio.putString("titulo", etTitulo.getText().toString());
                             if (etDate.getText().toString().equals("")) {
-                                nuevoEjercicio.putString("fecha", new Date().toString());
+                                nuevoEjercicio.putString("fecha", "");
                             }
                             else{
                                 nuevoEjercicio.putString("fecha", etDate.getText().toString());

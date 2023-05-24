@@ -92,8 +92,12 @@ public class MedicionesFragment extends Fragment {
                         String titulo = bundle.getString("titulo");
                         String fecha = bundle.getString("fecha");
                         Log.d("fecha", fecha);
-                        String fechabien = fecha.split("/")[1] + "/" + fecha.split("/")[0] + "/" + fecha.split("/")[2];
-                        Log.d("fechabien", fechabien);                        String medicion = bundle.getString("medicion");
+                        String fechabien = new Date().toString();
+                        if (fecha != "") {
+                            fechabien = fecha.split("/")[1] + "/" + fecha.split("/")[0] + "/" + fecha.split("/")[2];
+                        }
+                        Log.d("fechabien", fechabien);
+                        String medicion = bundle.getString("medicion");
                         String tipo = bundle.getString("tipo");
                         Log.d("MedicionesFragment", "titulo = " +
                                 titulo + "; fecha = " + fecha + "; medicion = " + medicion +

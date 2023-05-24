@@ -73,7 +73,7 @@ public class AddMedicionDialog extends AppCompatDialogFragment {
                             Bundle nuevaMedicion = new Bundle();
                             nuevaMedicion.putString("titulo", etTitulo.getText().toString());
                             if (etDate.getText().toString().equals("")) {
-                                nuevaMedicion.putString("fecha", new Date().toString());
+                                nuevaMedicion.putString("fecha", "");
                             }
                             else{
                                 nuevaMedicion.putString("fecha", etDate.getText().toString());
