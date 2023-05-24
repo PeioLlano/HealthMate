@@ -98,4 +98,6 @@
     <string name="normal">Normal</string>
     <string name="select_style">Select style</string>
     <string name="style_changed_to">"Style changed to "</string>
+    <string name="pharmacies">Pharmacies</string>
+    <string name="hospitals">Hospitals</string>
 </resources>

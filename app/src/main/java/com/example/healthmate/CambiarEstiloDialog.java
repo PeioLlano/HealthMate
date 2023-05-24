@@ -30,6 +30,7 @@ public class CambiarEstiloDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         miListener.alElegirEstilo(i);
+                        dismiss();
                     }
                 });
         return builder.create();

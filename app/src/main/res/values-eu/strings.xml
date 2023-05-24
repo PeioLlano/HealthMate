@@ -101,4 +101,6 @@
     <string name="normal">Normala</string>
     <string name="select_style">Itxura hautatu</string>
     <string name="style_changed_to">"Itxura aldatua "</string>
+    <string name="pharmacies">Farmaziak</string>
+    <string name="hospitals">Ospitaleak</string>
 </resources>

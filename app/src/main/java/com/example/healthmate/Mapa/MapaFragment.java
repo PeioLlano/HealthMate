@@ -89,9 +89,9 @@ public class MapaFragment extends Fragment implements OnMapReadyCallback {
 
         // Creamos una lista de posibles búsquedas y la populamos con algunos valores
         ArrayList<String> posiblesBusquedas = new ArrayList<>();
-        posiblesBusquedas.add("Farmacias");
+        posiblesBusquedas.add(getString(R.string.pharmacies));
         //posiblesBusquedas.add("Ambulatorios");
-        posiblesBusquedas.add("Hospitales");
+        posiblesBusquedas.add(getString(R.string.hospitals));
         //posiblesBusquedas.add("Nutricionistas");
 
         ArrayList<String> posiblesBusquedasIngles = new ArrayList<>();
