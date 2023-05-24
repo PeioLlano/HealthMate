@@ -6,89 +6,91 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:text="@string/type"/>
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp"
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/sTipo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/st_edittext"
-            android:minHeight="32dp"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:text="@string/type"/>
+
+            <Spinner
+                android:id="@+id/sTipo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/st_edittext"
+                android:minHeight="32dp"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/title"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/title"/>
 
-        <EditText
-            android:id="@+id/etTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/st_edittext"
-            android:gravity="center"
-            android:minHeight="32dp"
-            android:paddingStart="8dp"
-            tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+            <EditText
+                android:id="@+id/etTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/st_edittext"
+                android:gravity="center"
+                android:minHeight="32dp"
+                android:paddingStart="8dp"
+                tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/distance_km"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/distance_km"/>
 
-        <EditText
-            android:id="@+id/etDistancia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/st_edittext"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:minHeight="32dp"
-            android:paddingStart="8dp"
-            android:textAlignment="gravity"
-            tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+            <EditText
+                android:id="@+id/etDistancia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/st_edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:minHeight="32dp"
+                android:paddingStart="8dp"
+                android:textAlignment="gravity"
+                tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="8dp"
-            android:text="@string/date"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingStart="8dp"
+                android:text="@string/date"/>
 
-        <EditText
-            android:id="@+id/etDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/st_edittext"
-            android:ems="10"
-            android:gravity="center"
-            android:inputType="date"
-            android:minHeight="32dp"
-            android:paddingStart="8dp"
-            android:textAlignment="center"
-            tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/etDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/st_edittext"
+                android:ems="10"
+                android:gravity="center"
+                android:inputType="date"
+                android:minHeight="32dp"
+                android:paddingStart="8dp"
+                android:textAlignment="center"
+                tools:ignore="RtlCompat,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
