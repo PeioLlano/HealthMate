@@ -77,6 +77,7 @@ public class EjercicioFragment extends Fragment {
     private View llVacia;
     private EjercicioAdapter pAdapter;
     private ArrayList<Ejercicio> ejercicios;
+    private ArrayList<Ejercicio> listaFiltrada;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class EjercicioFragment extends Fragment {
                         // FILTRAR POR TIPO
                         String tipo = bundle.getString("Tipo");
                         Log.d("EjercicioFragment", "tipo = " + tipo);
-                        ArrayList<Ejercicio> listaFiltrada = ejercicios;
+                        listaFiltrada = ejercicios;
                         if(tipo != null) {
                             listaFiltrada = ejercicios.stream()
                                     .filter(ejercicio -> ejercicio.getTipo().equals(tipo))
@@ -222,6 +223,7 @@ public class EjercicioFragment extends Fragment {
             public void onClick(View view) {
                 EjercicioAdapter pAdapter = new EjercicioAdapter(requireContext(), ejercicios);
                 lvEjercicio.setAdapter(pAdapter);
+                listaFiltrada = null;
             }
         });
 
@@ -494,13 +496,25 @@ public class EjercicioFragment extends Fragment {
             // Define el formato deseado para la fecha
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-            for (int i = 0; i < ejercicios.size(); i++) {
-                tabla.addCell(createCell(ejercicios.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(dateFormat.format(ejercicios.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(ejercicios.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(String.valueOf(ejercicios.get(i).getDistancia()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+            if (listaFiltrada == null) {
+                for (int i = 0; i < ejercicios.size(); i++) {
+                    tabla.addCell(createCell(ejercicios.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(dateFormat.format(ejercicios.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(ejercicios.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(String.valueOf(ejercicios.get(i).getDistancia()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
 
-                fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                    fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                }
+            }
+            else{
+                for (int i = 0; i < listaFiltrada.size(); i++) {
+                    tabla.addCell(createCell(listaFiltrada.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(dateFormat.format(listaFiltrada.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(listaFiltrada.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(String.valueOf(listaFiltrada.get(i).getDistancia()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+
+                    fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                }
             }
 
             documento.add(tabla);
