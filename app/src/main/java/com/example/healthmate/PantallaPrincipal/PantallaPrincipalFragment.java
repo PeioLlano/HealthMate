@@ -122,12 +122,30 @@ public class PantallaPrincipalFragment extends Fragment {
 
         //cargarGrafico("Pasos");
         cargarGraficoMediciones("Presión arterial");
+        try {
+            Thread.sleep(1000); // Espera de 0.5 segundos (500 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         cargarGraficoMediciones("Altura");
+        try {
+            Thread.sleep(1000); // Espera de 0.5 segundos (500 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         cargarGraficoMediciones("Peso");
+        try {
+            Thread.sleep(1000); // Espera de 0.5 segundos (500 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         cargarGraficoMediciones("IMC");
+        try {
+            Thread.sleep(1000); // Espera de 0.5 segundos (500 milisegundos)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         cargarGraficoMediciones("Frecuencia cardíaca");
-
-        graficoAdapter.notifyDataSetChanged();
     }
 
     @Override

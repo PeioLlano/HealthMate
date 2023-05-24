@@ -50,8 +50,6 @@ public class MedicinasActivity extends AppCompatActivity implements ConsumoAdapt
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_medicinas);
