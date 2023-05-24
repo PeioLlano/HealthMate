@@ -94,13 +94,16 @@ public class EjercicioFragment extends Fragment {
                         int codigo = bundle.getInt("codigo");
                         String titulo = bundle.getString("titulo");
                         String fecha = bundle.getString("fecha");
+                        Log.d("fecha", fecha);
+                        String fechabien = fecha.split("/")[1] + "/" + fecha.split("/")[0] + "/" + fecha.split("/")[2];
+                        Log.d("fechabien", fechabien);
                         Double distancia = bundle.getDouble("distancia");
                         String tipo = bundle.getString("tipo");
                         Log.d("EjercicioFragment", "Código = " + codigo + "; titulo = " +
                             titulo + "; fecha = " + fecha + "; distancia = " + distancia +
                             "; tipo = " + tipo);
 
-                        Ejercicio ejercicioNuevo = new Ejercicio(codigo, titulo,new Date(fecha),distancia,tipo);
+                        Ejercicio ejercicioNuevo = new Ejercicio(codigo, titulo,new Date(fechabien),distancia,tipo);
                         añadirEjercicio(ejercicioNuevo);
                     }
                 });
