@@ -34,6 +34,7 @@
             android:hint="@string/enter_message"
             android:padding="8dp"
             android:textColorHint="@color/green_200"
+            android:textColor="@color/quantum_grey"
             android:textSize="20sp"
             tools:ignore="TouchTargetSizeCheck" />
 

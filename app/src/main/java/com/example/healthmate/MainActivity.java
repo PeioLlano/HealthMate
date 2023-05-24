@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         super.onCreate(savedInstanceState);
+
+        cargarPreferencias();
 
         setContentView(R.layout.activity_main);
 
@@ -321,5 +325,57 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("tema", tema);
         editor.commit();
+    }
+
+    public void cargarPreferencias(){
+        SharedPreferences preferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        String estilo = preferences.getString("tema", "");
+
+        switch (estilo) {
+            case "Dark":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case "Normal":
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+        }
+
+        String idioma = preferences.getString("idioma", "");
+
+        switch (idioma){
+            case "en":
+                Locale nuevaloc = new Locale("en");
+                Locale.setDefault(nuevaloc);
+                Configuration configuration = getBaseContext().getResources().getConfiguration();
+                configuration.setLocale(nuevaloc);
+                configuration.setLayoutDirection(nuevaloc);
+
+                Context context = getBaseContext().createConfigurationContext(configuration);
+                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+                break;
+            case "s":
+                Locale nuevalocEs = new Locale("es");
+                Locale.setDefault(nuevalocEs);
+                Configuration configurationEs = getBaseContext().getResources().getConfiguration();
+                configurationEs.setLocale(nuevalocEs);
+                configurationEs.setLayoutDirection(nuevalocEs);
+
+                Context contextEs = getBaseContext().createConfigurationContext(configurationEs);
+                getBaseContext().getResources().updateConfiguration(configurationEs, contextEs.getResources().getDisplayMetrics());
+                break;
+            case "eu":
+                Locale nuevalocEu = new Locale("eu");
+                Locale.setDefault(nuevalocEu);
+                Configuration configurationEu = getBaseContext().getResources().getConfiguration();
+                configurationEu.setLocale(nuevalocEu);
+                configurationEu.setLayoutDirection(nuevalocEu);
+
+                Context contextEu = getBaseContext().createConfigurationContext(configurationEu);
+                getBaseContext().getResources().updateConfiguration(configurationEu, contextEu.getResources().getDisplayMetrics());
+                break;
+        }
+
     }
 }
