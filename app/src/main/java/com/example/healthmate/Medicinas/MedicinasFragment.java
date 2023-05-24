@@ -143,7 +143,7 @@ public class MedicinasFragment extends Fragment {
         // Ejemplo hasta que decidimamos como almacenamos los datos
         medicinas = new ArrayList<>();
 
-        //Pedimos todos los ejercicios que tenga el usuario que hemos recibido
+        //Pedimos todos los medicinas que tenga el usuario que hemos recibido
         final JSONArray[] jsonArray = {new JSONArray()};
 
         Data data = new Data.Builder()
