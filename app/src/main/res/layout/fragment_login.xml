@@ -16,7 +16,7 @@
             android:id="@+id/ivFotoLogin"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:src="@mipmap/logo" />
 
         <EditText
             android:id="@+id/eUsername"
@@ -71,7 +71,7 @@
             android:id="@+id/bSignUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/gray"
             android:text="@string/signup"
             android:textColor="#455A64" />

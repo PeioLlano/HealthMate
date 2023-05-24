@@ -75,6 +75,7 @@ public class MedicionesFragment extends Fragment {
     private View llVacia;
     private MedicionAdapter pAdapter;
     private ArrayList<Medicion> mediciones;
+    private ArrayList<Medicion> listaFiltrada;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class MedicionesFragment extends Fragment {
                         // FILTRAR POR TIPO
                         String tipo = bundle.getString("Tipo");
                         Log.d("MedicionesFragment", "tipo = " + tipo);
-                        ArrayList<Medicion> listaFiltrada = mediciones;
+                        listaFiltrada = mediciones;
                         if (tipo != null) {
                             listaFiltrada = mediciones.stream()
                                     .filter(medicion -> medicion.getTipo().equals(tipo))
@@ -205,6 +206,7 @@ public class MedicionesFragment extends Fragment {
             public void onClick(View view) {
                 MedicionAdapter pAdapter = new MedicionAdapter(requireContext(), mediciones);
                 lvMediciones.setAdapter(pAdapter);
+                listaFiltrada = null;
             }
         });
 
@@ -470,13 +472,25 @@ public class MedicionesFragment extends Fragment {
             // Define el formato deseado para la fecha
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-            for (int i = 0; i < mediciones.size(); i++) {
-                tabla.addCell(createCell(mediciones.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(dateFormat.format(mediciones.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(mediciones.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
-                tabla.addCell(createCell(String.valueOf(mediciones.get(i).getMedicion()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+            if (listaFiltrada == null) {
+                for (int i = 0; i < mediciones.size(); i++) {
+                    tabla.addCell(createCell(mediciones.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(dateFormat.format(mediciones.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(mediciones.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(String.valueOf(mediciones.get(i).getMedicion()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
 
-                fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                    fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                }
+            }
+            else{
+                for (int i = 0; i < listaFiltrada.size(); i++) {
+                    tabla.addCell(createCell(listaFiltrada.get(i).getTitulo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(dateFormat.format(listaFiltrada.get(i).getFecha()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(listaFiltrada.get(i).getTipo(), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+                    tabla.addCell(createCell(String.valueOf(listaFiltrada.get(i).getMedicion()), contenidoFont, fondoAlternado ? colorFondo1 : colorFondo2));
+
+                    fondoAlternado = !fondoAlternado; // Cambia el color de fondo para la siguiente fila
+                }
             }
 
             documento.add(tabla);
