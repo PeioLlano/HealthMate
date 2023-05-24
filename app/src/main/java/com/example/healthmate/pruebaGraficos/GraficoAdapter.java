@@ -45,6 +45,7 @@ public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
     public void onBindViewHolder(@NonNull GraficoViewHolder holder, int position) {
         Grafico graf = listaGraficos.get(position);
         //if (position == 0) {
+        holder.graficoBase.setProgressBar(holder.progressBar);
         crearGraficoBarras(holder.graficoBase, graf.getGrafico(), graf.getTipo());
         //crearGraficoLineas(holder.graficoBase, graf.getGrafico(), graf.getTipo());
         //}
