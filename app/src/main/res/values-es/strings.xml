@@ -26,7 +26,7 @@
     <string name="cant_obtain_location">No se ha podido obtener la ubicación actual</string>
     <string name="register_activity_time_title">¡Hora de registrar actividad!</string>
     <string name="register_activity_time_text">No has registrado ninguna actividad hoy. ¡Registra tu actividad ahora!</string>
-    <string name="enterExerciseData">Enter exercise data</string>
+    <string name="enterExerciseData">Introduce la información del ejercicio</string>
     <string name="change_language">Cambiar idioma</string>
     <string name="map_menu">Mapa</string>
     <string name="sport_menu">Ejercicio</string>

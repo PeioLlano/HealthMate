@@ -18,6 +18,7 @@
     <string name="diff_pass">Passwords do not match.</string>
     <string name="invalid_mail">Enter a valid email.</string>
     <string name="fill_fields">Fill in all the fields.</string>
+    <string name="enterExerciseData">Enter exercise data</string>
     <string name="enterMedicionData">Add information of the measurement</string>
     <string name="error">An error has occurred</string>
     <string name="delete_medicine">Do you want to delete the medicine?</string>
@@ -26,7 +27,6 @@
     <string name="cant_obtain_location">Unable to get current location</string>
     <string name="register_activity_time_title">¡It\'s time to register a new activity!</string>
     <string name="register_activity_time_text">You haven\'t register any activity today. ¡Register your activity now!</string>
-    <string name="enterExerciseData">Introduce la información del ejercicio</string>
     <string name="change_language">Change language</string>
     <string name="map_menu">Map</string>
     <string name="sport_menu">Sport</string>
@@ -57,28 +57,7 @@
     <string name="call_nearest_dr">Call nearest Dr.</string>
     <string name="error_2">A problem has occurred.</string>
     <string name="loading">Loading. Please wait...</string>
-    <string name="app_info">
-        ¡Discover HealthMate, your personalised Health Mate!\n\n
-
-        HealthMate is an app designed so as to help you improving your welfare and living a
-        healthy lifestyle. With a vast variety of characteristics and functionalities, it offers
-        you the possibility to manage your exercise measurements, control your eating habits,
-        track your progress and much more.\n\n
-
-        Main features of HealthMate:\n\n
-
-        - Record your exercises: Keep a register of your physical activities, such as running,
-        swimming, cycling, etc., for effective tracking of your exercise routine.\n
-        - Graphs and statistics: Visualise your progress through detailed graphs and statistics,
-        allowing you to evaluate your progress and set realistic goals.\n
-        - Reminders and alarms: Set personalised reminders and alarms to keep you motivated and not
-        forget your healthy habits and activities.\n\n
-
-        Download HealhMate now and start taking care of health and welfare in an easy and
-        effective way.\n\n
-
-        ¡Improve your lifestyle using HealthMate!
-    </string>
+    <string name="app_info">enterExerciseData</string>
     <string name="share_healthmate">Share HealthMate</string>
     <string name="about_text">
         ¡Welcome to our app!\n\n
