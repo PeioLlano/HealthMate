@@ -122,8 +122,8 @@ public class PantallaPrincipalFragment extends Fragment {
 
         //cargarGrafico("Pasos");
         cargarGraficoMediciones("Presión arterial");
-        cargarGraficoMediciones("Altura");
-        cargarGraficoMediciones("Peso");
+        //cargarGraficoMediciones("Altura");
+        //cargarGraficoMediciones("Peso");
         cargarGraficoMediciones("IMC");
         cargarGraficoMediciones("Frecuencia cardíaca");
     }
