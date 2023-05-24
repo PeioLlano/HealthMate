@@ -41,7 +41,7 @@
     <string name="type">Type</string>
     <string name="title">Title</string>
     <string name="distance_km">Distance (kms)</string>
-    <string name="date">Fecha (valor predeterminado: fecha actual)</string>
+    <string name="date">Date (default today and now)</string>
     <string name="name">Name</string>
     <string name="time">Time</string>
     <string name="monday">Monday</string>
