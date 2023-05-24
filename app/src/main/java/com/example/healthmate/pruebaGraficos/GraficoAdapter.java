@@ -1,10 +1,12 @@
 package com.example.healthmate.pruebaGraficos;
 
+import android.content.res.Configuration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.anychart.AnyChart;
@@ -82,6 +84,11 @@ public class GraficoAdapter extends RecyclerView.Adapter<GraficoViewHolder> {
 
         //cartesian.xAxis(0).title("Día del mes");
         cartesian.yAxis(0).title(tipo);
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            cartesian.background().enabled(true);
+            cartesian.background().fill("#121212");
+        }
 
         grafico.setChart(cartesian);
     }
