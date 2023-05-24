@@ -126,6 +126,8 @@ public class PantallaPrincipalFragment extends Fragment {
         cargarGraficoMediciones("Peso");
         cargarGraficoMediciones("IMC");
         cargarGraficoMediciones("Frecuencia cardíaca");
+
+        graficoAdapter.notifyDataSetChanged();
     }
 
     @Override
