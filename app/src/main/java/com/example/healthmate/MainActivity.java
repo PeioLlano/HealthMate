@@ -66,7 +66,8 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity
     implements PantallaPrincipalFragment.ListenerPantallaPrincipalFragment,
-        AddMedicionDialog.AddMedicionDialogListener {
+        AddMedicionDialog.AddMedicionDialogListener,
+        CambiarEstiloDialog.ListenerdelDialogoEstilo{
 
     /* Atributos de la interfaz gráfica */
     private BottomNavigationView bnvOpciones;
@@ -157,6 +158,11 @@ public class MainActivity extends AppCompatActivity
                     case R.id.change_language:
                         CambiarIdiomaDialog cambiarIdiomaDialog = new CambiarIdiomaDialog();
                         cambiarIdiomaDialog.show(getSupportFragmentManager(), "DialogoCambiarIdioma");
+                        break;
+
+                    case R.id.change_style:
+                        CambiarEstiloDialog dialogEst = new CambiarEstiloDialog();
+                        dialogEst.show(getSupportFragmentManager(), "DialogoEstilo");
                         break;
 
                     case R.id.call:
@@ -291,4 +297,29 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void alElegirEstilo(int i) {
+        int tiempoToast= Toast.LENGTH_SHORT;
+        CharSequence[] opciones = {"Dark", getString(R.string.normal)};
+        Toast avisoEstiloCambiado = Toast.makeText(this, getString(R.string.style_changed_to) + opciones[i], tiempoToast);
+        avisoEstiloCambiado.show();
+
+        guardarPreferenciaEstilo((String) opciones[i]);
+
+        switch (i) {
+            case 0:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+            case 1:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+        }
+    }
+
+    public void guardarPreferenciaEstilo(String tema){
+        SharedPreferences preferences = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("tema", tema);
+        editor.commit();
+    }
 }

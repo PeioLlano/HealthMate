@@ -96,4 +96,9 @@
     </string>
     <string name="nombre">Izena</string>
     <string name="filter_measurements">Neurketak iragazi</string>
+    <string name="change_style">Itxura aldatu</string>
+    <string name="dark">Iluna</string>
+    <string name="normal">Normala</string>
+    <string name="select_style">Itxura hautatu</string>
+    <string name="style_changed_to">"Itxura aldatua "</string>
 </resources>

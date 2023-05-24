@@ -18,6 +18,21 @@
 
     <group android:id="@+id/grupo2">
 
+
+        <item
+            android:id="@+id/change_language"
+            android:title="@string/change_language"
+            android:icon="@drawable/language" />
+
+        <item
+            android:id="@+id/change_style"
+            android:title="@string/change_style"
+            android:icon="@drawable/style" />
+
+    </group>
+
+    <group android:id="@+id/grupo3">
+
     <item
         android:id="@+id/shareFragment"
         android:title="@string/share_menu"
@@ -27,11 +42,6 @@
         android:id="@+id/about"
         android:title="@string/about_menu"
         android:icon="@drawable/about" />
-
-    <item
-        android:id="@+id/change_language"
-        android:title="@string/change_language"
-        android:icon="@drawable/language" />
 
     <item
         android:id="@+id/logoutFragment"

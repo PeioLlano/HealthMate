@@ -93,4 +93,9 @@
     </string>
     <string name="nombre">Name</string>
     <string name="filter_measurements">Filter measurements</string>
+    <string name="change_style">Change style</string>
+    <string name="dark">Dark</string>
+    <string name="normal">Normal</string>
+    <string name="select_style">Select style</string>
+    <string name="style_changed_to">"Style changed to "</string>
 </resources>

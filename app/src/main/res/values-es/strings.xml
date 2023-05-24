@@ -94,4 +94,9 @@
     </string>
     <string name="nombre">Nombre</string>
     <string name="filter_measurements">Filtrar mediciones</string>
+    <string name="change_style">Cambiar estilo</string>
+    <string name="dark">Oscuro</string>
+    <string name="normal">Normal</string>
+    <string name="select_style">Selacciona estilo</string>
+    <string name="style_changed_to">"Estilo cambiado a "</string>
 </resources>
