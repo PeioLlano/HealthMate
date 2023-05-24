@@ -2,6 +2,7 @@ package com.example.healthmate;
 
 import static android.widget.Toast.makeText;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
     private Integer requestCodeCall = 112;
     private ProgressDialog dialog;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -185,6 +187,8 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0); // Obtiene la vista del encabezado del NavigationView
         TextView tvUsername = headerView.findViewById(R.id.tvUsername);
         tvUsername.setText(cargarLogeado());
+
+
     }
 
 

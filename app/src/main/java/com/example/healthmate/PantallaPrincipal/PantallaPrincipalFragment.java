@@ -121,11 +121,12 @@ public class PantallaPrincipalFragment extends Fragment {
         rvGraficos.setAdapter(graficoAdapter);
 
         //cargarGrafico("Pasos");
-        cargarGraficoMediciones("Presión arterial");
         //cargarGraficoMediciones("Altura");
         //cargarGraficoMediciones("Peso");
         cargarGraficoMediciones("IMC");
         cargarGraficoMediciones("Frecuencia cardíaca");
+        cargarGraficoMediciones("Presión arterial");
+
     }
 
     @Override
