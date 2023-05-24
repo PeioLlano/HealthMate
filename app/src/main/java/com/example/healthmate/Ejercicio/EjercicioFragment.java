@@ -95,7 +95,10 @@ public class EjercicioFragment extends Fragment {
                         String titulo = bundle.getString("titulo");
                         String fecha = bundle.getString("fecha");
                         Log.d("fecha", fecha);
-                        String fechabien = fecha.split("/")[1] + "/" + fecha.split("/")[0] + "/" + fecha.split("/")[2];
+                        String fechabien = new Date().toString();
+                        if (fecha != "") {
+                            fechabien = fecha.split("/")[1] + "/" + fecha.split("/")[0] + "/" + fecha.split("/")[2];
+                        }
                         Log.d("fechabien", fechabien);
                         Double distancia = bundle.getDouble("distancia");
                         String tipo = bundle.getString("tipo");
