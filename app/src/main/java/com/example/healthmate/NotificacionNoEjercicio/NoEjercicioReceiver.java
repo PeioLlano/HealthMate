@@ -1,10 +1,14 @@
 package com.example.healthmate.NotificacionNoEjercicio;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -30,11 +34,41 @@ public class NoEjercicioReceiver extends BroadcastReceiver {
 
         // Crea un intent para abrir la actividad de registro de actividad cuando se haga clic en la notificación
         Intent activityIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                activityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE
+            );
+        } else {
+            pendingIntent = PendingIntent.getActivity(
+                context,
+                0,
+                activityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        }
+
+
         builder.setContentIntent(pendingIntent);
 
         // Muestra la notificación utilizando el NotificationManager
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        // Añadir canal de notificaciones para poder enviar notificaciones a partir de Android 8.0
+        NotificationChannel canalNotificaciones = new NotificationChannel(
+                "channel_id",
+                "HealthMate",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        notificationManager.createNotificationChannel(canalNotificaciones);
+
+        canalNotificaciones.setDescription("APK Euroliga");
+        canalNotificaciones.enableLights(true);
+        canalNotificaciones.setLightColor(Color.RED);
+
         notificationManager.notify(0, builder.build());
     }
 }

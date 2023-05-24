@@ -390,6 +390,7 @@ public class EjercicioFragment extends Fragment {
 
         // Formatea la fecha utilizando el formato definido
         String formattedDate = dateFormat.format(item.getFecha());
+        Log.d("EjercicioFragment", "FECHA = " + item.getFecha());
 
         //Hacemos try de insertar el grupo para mostrar un toast en caso de que no se pueda insertar
         Data data = new Data.Builder()

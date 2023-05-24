@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 import java.util.Calendar;
 
@@ -21,7 +22,7 @@ public class NoEjercicioNotificationHelper {
 
         // Calcula la hora de la notificación
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        // calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, NOTIFICATION_HOUR);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -42,7 +43,23 @@ public class NoEjercicioNotificationHelper {
 
         // Crea un intent para el receptor de la notificación
         Intent intent = new Intent(context, NoEjercicioReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(
+                context,
+                NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE
+            );
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(
+                context,
+                NOTIFICATION_ID,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            );
+        }
+
 
         // Cancela la alarma asociada con el intent
         alarmManager.cancel(pendingIntent);
